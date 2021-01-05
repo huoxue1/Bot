@@ -100,11 +100,19 @@ func SignIn(event go_mybots.Event) {
 			log.Panic(err)
 		}
 		if sign {
+			num, err := xlsx.SearchNum()
+			if err != nil {
+				log.Panic(err)
+			}
 			bot.SendGroupMsg(event.GroupId,
-				fmt.Sprintf("签到成功,积分加一;\n[CQ:at,qq=%v]", event.UserId), false)
+				fmt.Sprintf("签到成功,积分增加2;\n当前共有积分%v\n[CQ:at,qq=%v]", num, event.UserId), false)
 		} else {
+			num, err := xlsx.SearchNum()
+			if err != nil {
+				log.Panic(err)
+			}
 			bot.SendGroupMsg(event.GroupId,
-				fmt.Sprintf("今日已签到，请明日再来;\n[CQ:at,qq=%v]", event.UserId), false)
+				fmt.Sprintf("今日已签到，请明日再来;当前共有积分%v\n[CQ:at,qq=%v]", num, event.UserId), false)
 		}
 	} else if event.Message == "积分查询" {
 		x := Integral.Xlsx{Event: event, Sheet: "Sheet1"}

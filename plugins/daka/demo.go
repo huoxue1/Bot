@@ -82,21 +82,27 @@ func commit(xh, xm string) error {
 	}
 	defer response.Body.Close()
 	d, err := commitData(response, client, 1)
-
+	if err != nil {
+		return err
+	}
 	if d.Code == 0 {
 		WriteFile("打早卡成功")
 	} else if d.Code == 1 {
 		WriteFile("今日早卡已打卡")
 	}
 	d, err = commitData(response, client, 2)
-
+	if err != nil {
+		return err
+	}
 	if d.Code == 0 {
 		WriteFile("打午卡成功")
 	} else if d.Code == 1 {
 		WriteFile("今日午卡已打卡")
 	}
 	d, err = commitData(response, client, 3)
-
+	if err != nil {
+		return err
+	}
 	if d.Code == 0 {
 		WriteFile("打晚卡成功")
 	} else if d.Code == 1 {
@@ -126,7 +132,6 @@ func commitData(response *http.Response, client http.Client, num int) (data, err
 	var res data
 	err = json.Unmarshal(all, &res)
 	if err != nil {
-		fmt.Println(err)
 		return data{}, err
 	}
 	return res, err
@@ -141,7 +146,10 @@ func WriteFile(string2 string) {
 	}()
 	log.Println(string2)
 	path, err := os.Getwd()
-	file, err := os.OpenFile(path+"/logs/"+time.Now().Format("2006-01-02")+".log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+	file, err := os.OpenFile(path+"plugins/logs/"+time.Now().Format("2006-01-02")+".log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Panic(err)
+	}
 	_, err = file.WriteString(time.Now().Format("2006-01-02 15:04:05") + " " + string2 + "\n\n")
 	if err != nil {
 		panic("log  " + string2 + "  error")

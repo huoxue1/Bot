@@ -2,7 +2,7 @@ package Integral
 
 import (
 	"fmt"
-	go_mybots "github.com/3343780376/go-mybots"
+	gomybots "github.com/3343780376/go-mybots"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"log"
 	"strconv"
@@ -10,45 +10,32 @@ import (
 )
 
 var (
-	file *excelize.File
-	rows [][]string
-	err error
+	file  *excelize.File
+	rows  [][]string
+	err   error
 	sheet string
 )
 
-func main() {
-	xlsx := Xlsx{go_mybots.Event{UserId: 1234,Sender: go_mybots.Senders{Card: "aaaa"}},"Sheet1"}
-	err := xlsx.XlsxInit()
-	err = xlsx.InsertData()
-	increase, err := xlsx.Increase(10)
-	log.Println(xlsx.IsExit())
-	log.Println(increase)
-	if err != nil {
-		log.Println(err)
-	}
-}
-
 type Xlsx struct {
-	Event go_mybots.Event `json:"event"`
-	Sheet string `json:"sheet"`
+	Event gomybots.Event `json:"event"`
+	Sheet string         `json:"sheet"`
 }
-
 
 type Do interface {
-	XlsxInit()error
-	InsertData()error
+	XlsxInit() error
+	InsertData() error
 	IsExit() bool
-	Increase(n int)(bool,error)
-	Decrease(n int)(bool,error)
-	IsSign()(bool,error)
+	Increase(n int) (bool, error)
+	Decrease(n int) (bool, error)
+	IsSign() (bool, error)
 }
 
-func (x Xlsx) XlsxInit() error{
-	if x.Event.GroupId==727429388{
+func (x Xlsx) XlsxInit() error {
+	if x.Event.GroupId == 727429388 {
 		sheet = "fei"
-	}else if x.Event.GroupId==17185204 {
+	} else if x.Event.GroupId == 17185204 {
 		sheet = "xi"
-	}else {
+	} else {
 		sheet = "other"
 	}
 	var err error
@@ -59,74 +46,77 @@ func (x Xlsx) XlsxInit() error{
 	rows, err = file.GetRows(sheet)
 	return err
 }
-//插入积分数据
-func (x Xlsx) InsertData()error {
 
-	err = file.SetCellValue(sheet, fmt.Sprintf("A%d",len(rows)+1), x.Event.UserId)
-	err = file.SetCellValue(sheet, fmt.Sprintf("B%d",len(rows)+1), 10)
-	err = file.SetCellValue(sheet, fmt.Sprintf("C%d",len(rows)+1), x.Event.Sender.Card)
-	err = file.SetCellValue(sheet, fmt.Sprintf("D%d",len(rows)+1),0)
+//插入积分数据
+func (x Xlsx) InsertData() error {
+
+	err = file.SetCellValue(sheet, fmt.Sprintf("A%d", len(rows)+1), x.Event.UserId)
+	err = file.SetCellValue(sheet, fmt.Sprintf("B%d", len(rows)+1), 10)
+	err = file.SetCellValue(sheet, fmt.Sprintf("C%d", len(rows)+1), x.Event.Sender.Card)
+	err = file.SetCellValue(sheet, fmt.Sprintf("D%d", len(rows)+1), 0)
 	err = file.Save()
 	return err
 }
+
 //判断积分数据是否存在
-func (x Xlsx)IsExit() bool {
+func (x Xlsx) IsExit() bool {
 	if err != nil {
 		log.Println(err)
 	}
 	for _, i2 := range rows {
-		if len(i2)==0{
+		if len(i2) == 0 {
 			continue
-		}else{
-			if i2[0]==strconv.Itoa(x.Event.UserId) {
+		} else {
+			if i2[0] == strconv.Itoa(x.Event.UserId) {
 				return true
 			}
 		}
 	}
 	return false
 }
+
 //增加n个积分
-func (x Xlsx)Increase(n int)(bool,error) {
+func (x Xlsx) Increase(n int) (bool, error) {
 	defer file.Save()
 	var err error
 	if !x.IsExit() {
 		err = x.InsertData()
 	}
 	for i1, i2 := range rows {
-		if len(i2)!=0 {
-			if i2[0]==strconv.Itoa(x.Event.UserId) {
-				oldData,err := strconv.ParseInt(i2[1],10,32)
-				log.Println(oldData)
-				log.Println(int(oldData)+n)
+		if len(i2) != 0 {
+			if i2[0] == strconv.Itoa(x.Event.UserId) {
+				oldData, err := strconv.ParseInt(i2[1], 10, 32)
 				err = file.SetCellValue(sheet, fmt.Sprintf("B%v", i1+1), int(oldData)+n)
-				return true,err
+				return true, err
 			}
 		}
 
 	}
-	return false,err
+	return false, err
 }
+
 //减少n个积分
-func (x Xlsx)Decrease(n int)(bool,error) {
+func (x Xlsx) Decrease(n int) (bool, error) {
 	defer file.Save()
 	var err error
 	if !x.IsExit() {
 		err = x.InsertData()
 	}
 	for i1, i2 := range rows {
-		if len(i2) !=0 {
-			if i2[0]==strconv.Itoa(x.Event.UserId) {
-				oldData,err := strconv.ParseInt(i2[1],10,32)
+		if len(i2) != 0 {
+			if i2[0] == strconv.Itoa(x.Event.UserId) {
+				oldData, err := strconv.ParseInt(i2[1], 10, 32)
 				err = file.SetCellValue(sheet, fmt.Sprintf("B%v", i1+1), int(oldData)-n)
-				return true,err
+				return true, err
 			}
 		}
 
 	}
-	return false,err
+	return false, err
 }
+
 //判断是否签到
-func (x Xlsx)IsSign()(bool,error)  {
+func (x Xlsx) IsSign() (bool, error) {
 	day := time.Now().Day()
 	defer file.Save()
 	var err error
@@ -137,21 +127,21 @@ func (x Xlsx)IsSign()(bool,error)  {
 		if len(i2) != 0 {
 			if i2[0] == strconv.Itoa(x.Event.UserId) {
 				i, err := strconv.ParseInt(i2[3], 10, 32)
-				if  int(i) != day {
+				if int(i) != day {
 					_, err := x.Increase(2)
-					err = file.SetCellValue(sheet, fmt.Sprintf("D%d",i1+1),day)
-					return true,err
+					err = file.SetCellValue(sheet, fmt.Sprintf("D%d", i1+1), day)
+					return true, err
 				} else {
-					return false,err
+					return false, err
 				}
 			}
 		}
 
 	}
-	return false,err
+	return false, err
 }
 
-func (x Xlsx)SearchNum() (int,error) {
+func (x Xlsx) SearchNum() (int, error) {
 	//day := time.Now().Day()
 	defer file.Save()
 	var err error
@@ -162,12 +152,9 @@ func (x Xlsx)SearchNum() (int,error) {
 		if len(i2) != 0 {
 			if i2[0] == strconv.Itoa(x.Event.UserId) {
 				i, err := strconv.ParseInt(i2[1], 10, 32)
-				return int(i),err
+				return int(i), err
 			}
 		}
 	}
-	return 0,err
+	return 0, err
 }
-
-
-
