@@ -6,14 +6,21 @@ import (
 	_ "Bot/plugins/Robbery"
 	_ "Bot/plugins/refresh"
 	Bot "github.com/3343780376/go-mybots"
+	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
 )
 
 func main() {
 	hand := Bot.Hand()
-	err := hand.Run("127.0.0.1:8000")
+	handHttp(hand)
+	err := hand.Run("0.0.0.0:80")
 	if err != nil {
 		log.Println("端口错误")
 	}
 	log.Println("正在监听")
+}
+
+func handHttp(engine *gin.Engine) {
+	engine.StaticFS("/log", http.Dir("./plugins/logs"))
 }
