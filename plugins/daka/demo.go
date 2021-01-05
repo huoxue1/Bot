@@ -146,7 +146,7 @@ func WriteFile(string2 string) {
 	}()
 	log.Println(string2)
 	path, err := os.Getwd()
-	file, err := os.OpenFile(path+"plugins/logs/"+time.Now().Format("2006-01-02")+".log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+	file, err := os.OpenFile(path+"/plugins/logs/"+time.Now().Format("2006-01-02")+".log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Panic(err)
 	}

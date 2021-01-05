@@ -32,7 +32,7 @@ func Clock(event go_mybots.Event) {
 	if event.UserId == bot.Admin && event.Message == "打卡" {
 		do := daka.Do()
 		if do {
-			_, _ = bot.SendPrivateMsg(event.UserId, "打卡成功\nhttp:\\\\47.110.228.1\\log", false)
+			_, _ = bot.SendPrivateMsg(event.UserId, "打卡成功\nhttp://47.110.228.1/log", false)
 		} else {
 			_, _ = bot.SendPrivateMsg(event.UserId, "打卡失败", false)
 		}
