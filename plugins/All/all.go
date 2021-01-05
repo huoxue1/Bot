@@ -23,7 +23,7 @@ func init() {
 	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand,go_mybots.ViewOnC0CommandApi{CoCommand: BanSomeBody,
 		Command: "ban",Allies: "禁言",OnToMe: false})
 	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand,go_mybots.ViewOnC0CommandApi{CoCommand: Restart,
-		Command: "restart",Allies: "重启",OnToMe: false})
+		Command: ".restart",Allies: ".重启",OnToMe: false})
 }
 
 func Clock(event go_mybots.Event)  {
@@ -54,7 +54,7 @@ func BanSpecialWord(event go_mybots.Event)  {
 }
 
 func Restart(event go_mybots.Event, _ []string)  {
-	if event.UserId == bot.Admin&&event.Message == ".restart" {
+	if event.UserId == bot.Admin {
 		go bot.SetRestart(5)
 		_, err := bot.SendPrivateMsg(event.UserId, "重启成功", false)
 		if err != nil {
