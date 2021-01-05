@@ -6,6 +6,8 @@ github.com/3343780376/go-mybots v0.0.0-20210103093708-516a602ab343 h1:SgIWvAMkpt
 github.com/3343780376/go-mybots v0.0.0-20210103093708-516a602ab343/go.mod h1:oNRLiPWs0g8AA/jX7V5OMmAe2+ncErlb5NoFHSlwjUE=
 github.com/3343780376/go-mybots v0.0.0-20210105013619-59bf707ba7c5 h1:oiRuiyEEIeuQbAfisRB6c1+90hyG+9ZCpTMs5knclUY=
 github.com/3343780376/go-mybots v0.0.0-20210105013619-59bf707ba7c5/go.mod h1:oNRLiPWs0g8AA/jX7V5OMmAe2+ncErlb5NoFHSlwjUE=
+github.com/3343780376/go-mybots v0.0.0-20210105062148-4a94577595ad h1:EbbqcAY1Z7LF55SekR9wDwXrHVg4kg2pmLKEuZAXPLM=
+github.com/3343780376/go-mybots v0.0.0-20210105062148-4a94577595ad/go.mod h1:oNRLiPWs0g8AA/jX7V5OMmAe2+ncErlb5NoFHSlwjUE=
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1 h1:j56fC19WoD3z+u+ZHxm2XwRGyS1XmdSMk7058BLhdsM=
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1/go.mod h1:gXEhMjm1VadSGjAzyDlBxmdYglP8eJpYWxpwJnmXRWw=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
