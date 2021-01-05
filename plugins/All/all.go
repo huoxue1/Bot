@@ -54,8 +54,12 @@ func BanSpecialWord(event go_mybots.Event)  {
 }
 
 func Restart(event go_mybots.Event, _ []string)  {
-	if event.UserId == bot.Admin {
+	if event.UserId == bot.Admin&&event.Message == ".restart" {
 		go bot.SetRestart(5)
+		_, err := bot.SendPrivateMsg(event.UserId, "重启成功", false)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 }
 
