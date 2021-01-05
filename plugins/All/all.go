@@ -5,6 +5,8 @@ import (
 	"Bot/plugins/daka"
 	"github.com/3343780376/go-mybots"
 	"log"
+	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -64,17 +66,39 @@ func Restart(event go_mybots.Event, _ []string) {
 }
 
 func BanSomeBody(event go_mybots.Event, args []string) {
-	//Admin := []int{1662586498, 3343780376, 964637583}
-	//for _, i := range Admin {
-	//	if event.UserId == i {
-	//		split,err := strconv.ParseInt(strings.Split(regexp.MustCompile(
-	//			`CQ:at,qq=(\d+)`).FindString(event.Message), "=")[1],10,64)
-	//		duration, err := strconv.ParseInt(strings.Split(regexp.MustCompile(
-	//			`(\d+)`).FindString(event.Message), "=")[1], 10, 64)
-	//		err = bot.SetGroupBan(event.GroupId, int(split), int(duration))
-	//		if err!=nil {
-	//			log.Println(err)
-	//		}
-	//	}
-	//}
+	defer func() {
+		err := recover()
+		log.Println(err)
+	}()
+	Admin := []int{1662586498, 3343780376, 964637583}
+	var duration int
+	var err error
+	for _, i := range Admin {
+		if event.UserId == i {
+			if len(args) > 1 {
+				duration, err = strconv.Atoi(args[1])
+				if err != nil {
+					log.Panic(err)
+				}
+
+			} else {
+				bot.SendGroupMsg(event.GroupId, "请问禁言多长时间？"+go_mybots.MessageAt(event.UserId).Message, false)
+				nextEvent := bot.GetNextEvent(10, event.UserId)
+				duration, err = strconv.Atoi(nextEvent.Message)
+				if err != nil {
+					log.Panic(err)
+				}
+			}
+			compile := regexp.MustCompile(`(\d+)`)
+			atoi, err := strconv.Atoi(compile.FindString(event.Message))
+			if err != nil {
+				log.Panic(err)
+			}
+			err = bot.SetGroupBan(event.GroupId, atoi, duration)
+			if err != nil {
+				log.Panic(err)
+			}
+
+		}
+	}
 }
