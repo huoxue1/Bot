@@ -42,9 +42,10 @@ func Clock(event go_mybots.Event) {
 func BanSpecialWord(event go_mybots.Event) {
 	for _, word := range words {
 		if strings.Contains(event.Message, word) {
+			err := bot.DeleteMsg(event.MessageId)
 			bot.SendGroupMsg(event.GroupId,
 				"该消息已经违规，请注意言行\n积分减一"+go_mybots.MessageAt(event.UserId).Message, false)
-			err := bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
+			err = bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
 			xlsx := Integral.Xlsx{Event: event, Sheet: ""}
 			err = xlsx.XlsxInit()
 			_, err = xlsx.Decrease(2)
@@ -94,7 +95,7 @@ func BanSomeBody(event go_mybots.Event, args []string) {
 			if err != nil {
 				log.Panic(err)
 			}
-			err = bot.SetGroupBan(event.GroupId, atoi, duration)
+			err = bot.SetGroupBan(event.GroupId, atoi, duration*60)
 			if err != nil {
 				log.Panic(err)
 			}

@@ -16,6 +16,10 @@ type data struct {
 	Code int    `json:"code"`
 	Msg  string `json:"msg"`
 }
+type date struct {
+	Xm string `json:"xm"`
+	Xh string `json:"xh"`
+}
 
 func Do() bool {
 	defer func() {
@@ -24,33 +28,46 @@ func Do() bool {
 			log.Println("打卡失败")
 		}
 	}()
-	var data = map[string]string{
-		"19104978":     "苟江山",
-		"19106360":     "周玲",
-		"19105101":     "遇溪涓",
-		"19104950":     "陈峰",
-		"19107611":     "王干",
-		"19104916":     "张灿",
-		"19104977":     "陈月皓",
-		"19104958":     "陈伟",
-		"19104965":     "周杨琪",
-		"19101242":     "张志成",
-		"19104671":     "郭立扬",
-		"19208932":     "李宗杰",
-		"201813015120": "李明宸",
-		"19208581":     "潘鹏程",
-		"201817025138": "杨新",
-		"19104824":     "巫雨",
-		"19104966":     "白义枭",
-		"19106543":     "付焱青",
-		"19106564":     "蒲延慧",
-		"202542020058": "苏骏",
-		"201830055117": "黎智超",
-		"19104668":     "吴仲鑫"}
-	hour := time.Now().Hour()
-	fmt.Println(hour)
-	for k, v := range data {
-		err := commit(k, v)
+	//var data = map[string]string{
+	//	"19104978":     "苟江山",
+	//	"19106360":     "周玲",
+	//	"19105101":     "遇溪涓",
+	//	"19104950":     "陈峰",
+	//	"19107611":     "王干",
+	//	"19104916":     "张灿",
+	//	"19104977":     "陈月皓",
+	//	"19104958":     "陈伟",
+	//	"19104965":     "周杨琪",
+	//	"19101242":     "张志成",
+	//	"19104671":     "郭立扬",
+	//	"19208932":     "李宗杰",
+	//	"201813015120": "李明宸",
+	//	"19208581":     "潘鹏程",
+	//	"201817025138": "杨新",
+	//	"19104824":     "巫雨",
+	//	"19104966":     "白义枭",
+	//	"19106543":     "付焱青",
+	//	"19106564":     "蒲延慧",
+	//	"202542020058": "苏骏",
+	//	"201830055117": "黎智超",
+	//	"19104668":     "吴仲鑫"}
+	var Date []date
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Panic(err)
+	}
+	file, err := os.Open(dir + "/plugins/daka/daka.json")
+	if err != nil {
+		log.Panic(err)
+	}
+	defer file.Close()
+	decoder := json.NewDecoder(file)
+	err = decoder.Decode(&Date)
+	if err != nil {
+		log.Panic(err)
+	}
+	for _, v := range Date {
+		err := commit(v.Xh, v.Xm)
 		if err != nil {
 			panic(err)
 			return false
