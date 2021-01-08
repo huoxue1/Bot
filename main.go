@@ -4,6 +4,7 @@ import (
 	_ "Bot/plugins/All"
 	_ "Bot/plugins/Hello"
 	_ "Bot/plugins/Robbery"
+	"Bot/plugins/daka"
 	_ "Bot/plugins/refresh"
 	"fmt"
 	Bot "github.com/3343780376/go-mybots"
@@ -17,6 +18,7 @@ func main() {
 
 	hand := Bot.Hand()
 	handHttp(hand)
+	go daka.Cr()
 	Bot.LoadFilter("./config.json")
 	err := hand.Run("0.0.0.0:80")
 	if err != nil {

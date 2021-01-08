@@ -3,6 +3,8 @@ package daka
 import (
 	"encoding/json"
 	"fmt"
+	go_mybots "github.com/3343780376/go-mybots"
+	"github.com/robfig/cron"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -21,6 +23,33 @@ type date struct {
 	Xh string `json:"xh"`
 }
 
+var bot = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
+
+func Cr() {
+	c := cron.New()
+	spec := "0 0 1 * * ?"
+	err := c.AddFunc(spec, func() {
+		IS := false
+		if !Do() {
+			if Do() {
+				IS = true
+			}
+		} else {
+			IS = true
+		}
+		if IS {
+			_, _ = bot.SendPrivateMsg(3343780376, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
+		} else {
+			_, _ = bot.SendPrivateMsg(3343780376, "打卡失败", false)
+		}
+	})
+	if err != nil {
+		log.Println(err)
+	}
+	c.Start()
+	select {}
+}
+
 func Do() bool {
 	defer func() {
 		err := recover()
@@ -28,29 +57,7 @@ func Do() bool {
 			log.Println("打卡失败")
 		}
 	}()
-	//var data = map[string]string{
-	//	"19104978":     "苟江山",
-	//	"19106360":     "周玲",
-	//	"19105101":     "遇溪涓",
-	//	"19104950":     "陈峰",
-	//	"19107611":     "王干",
-	//	"19104916":     "张灿",
-	//	"19104977":     "陈月皓",
-	//	"19104958":     "陈伟",
-	//	"19104965":     "周杨琪",
-	//	"19101242":     "张志成",
-	//	"19104671":     "郭立扬",
-	//	"19208932":     "李宗杰",
-	//	"201813015120": "李明宸",
-	//	"19208581":     "潘鹏程",
-	//	"201817025138": "杨新",
-	//	"19104824":     "巫雨",
-	//	"19104966":     "白义枭",
-	//	"19106543":     "付焱青",
-	//	"19106564":     "蒲延慧",
-	//	"202542020058": "苏骏",
-	//	"201830055117": "黎智超",
-	//	"19104668":     "吴仲鑫"}
+
 	var Date []date
 	dir, err := os.Getwd()
 	if err != nil {
@@ -77,11 +84,7 @@ func Do() bool {
 	return true
 }
 func commit(xh, xm string) error {
-	//proxy := func(_ *http.Request) (*url.URL, error) {
-	//	return url.Parse("http://127.0.0.1:8888")
-	//}
 
-	//transport := &http.Transport{Proxy: proxy}
 	client := http.Client{}
 	values := url.Values{}
 	values.Set("xh", xh)
