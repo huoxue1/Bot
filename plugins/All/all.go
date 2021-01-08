@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var (
@@ -17,7 +18,7 @@ var (
 
 func init() {
 	words = []string{"傻逼", "艹", "草", "你妈", "sb", "鸡儿", "狗东西", "www", "请加群", "香港", "vpn", "WX", "嘿咻直播", "hzznyhwk", "足彩",
-		"福音QQ群", "CQ:rich", "CQ:json", "CQ:xml,data=<?xml", "加qq群"}
+		"福音QQ群", "CQ:rich", "CQ:xml,data=<?xml", "加qq群"}
 	go_mybots.ViewMessage = append(go_mybots.ViewMessage, go_mybots.ViewMessageApi{OnMessage: BanSpecialWord,
 		MessageType: go_mybots.MessageTypeApi.Group, SubType: ""})
 	go_mybots.ViewMessage = append(go_mybots.ViewMessage, go_mybots.ViewMessageApi{OnMessage: Clock,
@@ -32,7 +33,7 @@ func Clock(event go_mybots.Event) {
 	if event.UserId == bot.Admin && event.Message == "打卡" {
 		do := daka.Do()
 		if do {
-			_, _ = bot.SendPrivateMsg(event.UserId, "打卡成功\nhttp://47.110.228.1/log", false)
+			_, _ = bot.SendPrivateMsg(event.UserId, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
 		} else {
 			_, _ = bot.SendPrivateMsg(event.UserId, "打卡失败", false)
 		}
