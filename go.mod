@@ -3,7 +3,7 @@ module Bot
 go 1.14
 
 require (
-	github.com/3343780376/go-mybots v0.0.0-20210105062148-4a94577595ad
+	github.com/3343780376/go-mybots v0.0.0-20210107071643-3358f7412e76
 	github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/golang/protobuf v1.4.3 // indirect

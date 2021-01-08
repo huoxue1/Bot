@@ -9,6 +9,8 @@ github.com/3343780376/go-mybots v0.0.0-20210105013619-59bf707ba7c5 h1:oiRuiyEEIe
 github.com/3343780376/go-mybots v0.0.0-20210105013619-59bf707ba7c5/go.mod h1:oNRLiPWs0g8AA/jX7V5OMmAe2+ncErlb5NoFHSlwjUE=
 github.com/3343780376/go-mybots v0.0.0-20210105062148-4a94577595ad h1:EbbqcAY1Z7LF55SekR9wDwXrHVg4kg2pmLKEuZAXPLM=
 github.com/3343780376/go-mybots v0.0.0-20210105062148-4a94577595ad/go.mod h1:oNRLiPWs0g8AA/jX7V5OMmAe2+ncErlb5NoFHSlwjUE=
+github.com/3343780376/go-mybots v0.0.0-20210107071643-3358f7412e76 h1:l7j/P4PBS3ifCoFbsqqtuadVm4g58Itto9hute3qtpM=
+github.com/3343780376/go-mybots v0.0.0-20210107071643-3358f7412e76/go.mod h1:oNRLiPWs0g8AA/jX7V5OMmAe2+ncErlb5NoFHSlwjUE=
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1 h1:j56fC19WoD3z+u+ZHxm2XwRGyS1XmdSMk7058BLhdsM=
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1/go.mod h1:gXEhMjm1VadSGjAzyDlBxmdYglP8eJpYWxpwJnmXRWw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
