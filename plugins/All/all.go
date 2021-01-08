@@ -27,8 +27,11 @@ func init() {
 		Command: "ban", Allies: "禁言"})
 	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand, go_mybots.ViewOnC0CommandApi{CoCommand: Restart,
 		Command: ".restart", Allies: ".重启"})
+	go_mybots.ViewNotice = append(go_mybots.ViewNotice, go_mybots.ViewOnNoticeApi{OnNotice: UpLoadFile,
+		NoticeType: go_mybots.NoticeTypeApi.GroupUpload, SubType: ""})
 }
 
+//打卡
 func Clock(event go_mybots.Event) {
 	if event.UserId == bot.Admin && event.Message == "打卡" {
 		do := daka.Do()
@@ -40,6 +43,7 @@ func Clock(event go_mybots.Event) {
 	}
 }
 
+//关键词撤回加禁言
 func BanSpecialWord(event go_mybots.Event) {
 	for _, word := range words {
 		if strings.Contains(event.Message, word) {
@@ -57,6 +61,7 @@ func BanSpecialWord(event go_mybots.Event) {
 	}
 }
 
+//重启go-cqHttp
 func Restart(event go_mybots.Event, _ []string) {
 	if event.UserId == bot.Admin {
 		go bot.SetRestart(5)
@@ -67,6 +72,7 @@ func Restart(event go_mybots.Event, _ []string) {
 	}
 }
 
+//禁言命令，禁言某人
 func BanSomeBody(event go_mybots.Event, args []string) {
 	defer func() {
 		err := recover()
@@ -103,4 +109,14 @@ func BanSomeBody(event go_mybots.Event, args []string) {
 
 		}
 	}
+}
+
+//上传文件事件
+func UpLoadFile(event go_mybots.Event) {
+	xlsx := Integral.Xlsx{Event: event, Sheet: ""}
+	_, err := xlsx.Increase(5)
+	if err != nil {
+		panic(err)
+	}
+	bot.SendGroupMsg(event.GroupId, "文件上传成功，积分加5"+go_mybots.MessageAt(event.UserId).Message, false)
 }
