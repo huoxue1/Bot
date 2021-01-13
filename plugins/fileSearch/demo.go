@@ -68,24 +68,27 @@ func Search(event go_mybots.Event, args []string) {
 func download(m map[string]string) {
 	client := http.Client{}
 	for i, i2 := range m {
-		request, _ := http.NewRequest("GET", i2, nil)
-		response, err := client.Do(request)
-		if err != nil {
-			break
-		}
-		if response != nil {
-			defer response.Body.Close()
-		}
-		content, err := ioutil.ReadAll(response.Body)
-		file, err := os.OpenFile("./fiction/"+i, os.O_WRONLY|os.O_CREATE, 0666)
-		if err != nil {
-			break
-		}
-		_, err = file.WriteString(string(content))
-		if err != nil {
-			break
-		}
-		file.Close()
+		go func(i, i2 string) {
+			request, _ := http.NewRequest("GET", i2, nil)
+			response, err := client.Do(request)
+			if err != nil {
+				return
+			}
+			if response != nil {
+				defer response.Body.Close()
+			}
+			content, err := ioutil.ReadAll(response.Body)
+			file, err := os.OpenFile("./fiction/"+i, os.O_WRONLY|os.O_CREATE, 0666)
+			if err != nil {
+				return
+			}
+			_, err = file.WriteString(string(content))
+			if err != nil {
+				return
+			}
+			file.Close()
+		}(i, i2)
+
 	}
 	time.Sleep(300 * time.Second)
 	for i, _ := range m {
