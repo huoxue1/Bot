@@ -1,5 +1,0 @@
-package pixivic
-
-func SearchImage() {
-
-}
