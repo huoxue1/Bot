@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/3343780376/go-mybots"
 	"io/ioutil"
+	"log"
 	"net/http"
 	url2 "net/url"
 	"os"
@@ -19,6 +20,12 @@ func init() {
 }
 
 func Search(event go_mybots.Event, args []string) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 	type search struct {
 		FileName string
 		FileId   string
