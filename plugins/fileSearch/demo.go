@@ -5,12 +5,15 @@ import (
 	"github.com/3343780376/go-mybots"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
-	url2 "net/url"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
+
+var File = make(map[string]string)
 
 var bot = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
 
@@ -56,9 +59,12 @@ func Search(event go_mybots.Event, args []string) {
 		if contains {
 			searches = append(searches, search{i2.FileName, i2.FileId, i2.Busid})
 			url, _ := bot.GetGroupFileUrl(event.GroupId, i2.FileId, i2.Busid)
+			rand.Seed(time.Now().UnixNano())
+			str := strconv.FormatInt(time.Now().UnixNano()+rand.Int63n(1000), 10)
+			File[str] = i2.FileName
 			m[i2.FileName] = url.Url
 			message += fmt.Sprintf("\n文件名：%s\n\n下载链接：http://47.110.228.1/fiction/%s",
-				i2.FileName, url2.QueryEscape(i2.FileName))
+				i2.FileName, str)
 		}
 	}
 	go download(m)
@@ -91,10 +97,13 @@ func download(m map[string]string) {
 
 	}
 	time.Sleep(300 * time.Second)
+
 	for i, _ := range m {
+		delete(File, i)
 		err := os.Remove("./fiction/" + i)
 		if err != nil {
 			fmt.Println(err)
 		}
 	}
+
 }
