@@ -22,6 +22,7 @@
     <list default="true" id="670338bf-b134-41fb-9956-da5c6d8da7f7" name="默认更改列表" comment="commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugins/daka/daka.json" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/daka/daka.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/daka/demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/daka/demo.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,15 +66,15 @@
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\projects\GO\Bot\plugins" />
-      <recent name="E:\projects\GO\Bot\plugins\daka" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\projects\GO\Bot\plugins\daka" />
       <recent name="E:\projects\GO\Bot" />
       <recent name="E:\projects\GO\Bot\plugins" />
       <recent name="E:\projects\GO\Bot\templete" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\projects\GO\Bot\plugins" />
+      <recent name="E:\projects\GO\Bot\plugins\daka" />
     </key>
   </component>
   <component name="RunManager" selected="Go Build.go build main.go">
@@ -197,10 +198,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="270" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1610594854531" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1610606824843">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1610783193035">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1610606824843" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1610783193035" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1609670187259">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

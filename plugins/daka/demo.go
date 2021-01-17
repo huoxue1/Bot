@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -19,8 +20,10 @@ type data struct {
 	Msg  string `json:"msg"`
 }
 type date struct {
-	Xm string `json:"xm"`
-	Xh string `json:"xh"`
+	Xm  string `json:"xm"`
+	Xh  string `json:"xh"`
+	Add string `json:"add"`
+	Num string `json:"num"`
 }
 
 var bot = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
@@ -74,7 +77,7 @@ func Do() bool {
 		log.Panic(err)
 	}
 	for _, v := range Date {
-		err := commit(v.Xh, v.Xm)
+		err := commit(v)
 		if err != nil {
 			panic(err)
 			return false
@@ -83,12 +86,12 @@ func Do() bool {
 	}
 	return true
 }
-func commit(xh, xm string) error {
+func commit(date2 date) error {
 
 	client := http.Client{}
 	values := url.Values{}
-	values.Set("xh", xh)
-	values.Set("xm", xm)
+	values.Set("xh", date2.Xh)
+	values.Set("xm", date2.Xm)
 	request, err := http.NewRequest(http.MethodPost, "http://xxcj.scnucas.com/xxcj/Login_ck.php", strings.NewReader(values.Encode()))
 	if err != nil {
 		return err
@@ -96,12 +99,12 @@ func commit(xh, xm string) error {
 	request.Header.Set("User-agent", "micromessenger")
 	request.Header.Set(`Content-Type`, `application/x-www-form-urlencoded`)
 	response, err := client.Do(request)
-	WriteFile(xm + "  " + xh)
+	WriteFile(date2.Xm + "  " + date2.Xh)
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
-	d, err := commitData(response, client, 1)
+	d, err := commitData(response, client, 1, date2)
 	if err != nil {
 		return err
 	}
@@ -110,7 +113,7 @@ func commit(xh, xm string) error {
 	} else if d.Code == 1 {
 		WriteFile("今日早卡已打卡")
 	}
-	d, err = commitData(response, client, 2)
+	d, err = commitData(response, client, 2, date2)
 	if err != nil {
 		return err
 	}
@@ -119,7 +122,7 @@ func commit(xh, xm string) error {
 	} else if d.Code == 1 {
 		WriteFile("今日午卡已打卡")
 	}
-	d, err = commitData(response, client, 3)
+	d, err = commitData(response, client, 3, date2)
 	if err != nil {
 		return err
 	}
@@ -131,9 +134,16 @@ func commit(xh, xm string) error {
 	return err
 }
 
-func commitData(response *http.Response, client http.Client, num int) (data, error) {
+func commitData(response *http.Response, client http.Client, num int, date2 date) (data, error) {
 	v := url.Values{}
-	v.Set("post_date", fmt.Sprintf("day_tj1=A&day_tj2=A&day_tj2_zzxq=&day_tj4=A&day_tj4_1=&day_tj5=B&day_tj7=1&szdq_no=&szdq_vl=&jianyi=&lx=%v", num))
+	var str string
+	if date2.Add == "" {
+		str = "day_tj1=A&day_tj2=A&day_tj2_zzxq=&day_tj4=A&day_tj4_1=&day_tj5=B&day_tj7=1&szdq_no=&szdq_vl=&jianyi=&lx=" + strconv.Itoa(num)
+	} else {
+		str = fmt.Sprintf("day_tj1=A&day_tj2=A&day_tj2_zzxq=&day_tj4=A&day_tj4_1=&day_tj5=B&day_tj7=0&szdq_no=%s&szdq_vl=%s&jianyi=&lx=%v", date2.Num, date2.Add, num)
+	}
+	//str := "day_tj1=A&day_tj2=A&day_tj2_zzxq=&day_tj4=A&day_tj4_1=&day_tj5=B&day_tj7=0&szdq_no=51,5119,511923&szdq_vl=四川省,巴中市,平昌县&jianyi=&lx=1"
+	v.Set("post_date", str)
 	newRequest, err := http.NewRequest(http.MethodPost, "http://xxcj.scnucas.com/xxcj/fx_action.php", strings.NewReader(v.Encode()))
 	if err != nil {
 		return data{}, err
