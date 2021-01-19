@@ -30,7 +30,7 @@ var bot = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
 
 func Cr() {
 	c := cron.New()
-	spec := "0 0 0 * * ?"
+	spec := "0 1 0 * * ?"
 	err := c.AddFunc(spec, func() {
 		IS := false
 		if !Do() {
