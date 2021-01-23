@@ -30,7 +30,7 @@ var bot = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
 
 func Cr() {
 	c := cron.New()
-	spec := "0 1 0 * * ?"
+	spec := "0 1 1 * * ?"
 	err := c.AddFunc(spec, func() {
 		IS := false
 		if !Do() {
@@ -88,7 +88,7 @@ func Do() bool {
 }
 func commit(date2 date) error {
 
-	client := http.Client{}
+	client := http.Client{Timeout: 60}
 	values := url.Values{}
 	values.Set("xh", date2.Xh)
 	values.Set("xm", date2.Xm)

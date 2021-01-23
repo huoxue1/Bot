@@ -23,6 +23,9 @@ func init() {
 }
 
 func Search(event go_mybots.Event, args []string) {
+	if event.SelfId == 3343780376 {
+		return
+	}
 	defer func() {
 		err := recover()
 		if err != nil {

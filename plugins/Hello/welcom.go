@@ -29,6 +29,9 @@ func init() {
 }
 
 func Welcome(event go_mybots.Event) {
+	if event.SelfId == 3343780376 {
+		return
+	}
 	hour := time.Now().Hour()
 	m := map[string]string{"早上好": "，美好的一天又开始了",
 		"上午好": "上午好",
@@ -70,10 +73,16 @@ func Welcome(event go_mybots.Event) {
 }
 
 func Leave(event go_mybots.Event) {
+	if event.SelfId == 3343780376 {
+		return
+	}
 	bot.SendGroupMsg(event.GroupId, fmt.Sprintf("%v离开了本群", event.UserId), false)
 }
 
 func Test(event go_mybots.Event) {
+	if event.SelfId == 3343780376 {
+		return
+	}
 	if event.GroupId == xi {
 		bot.SendGroupMsg(event.GroupId, "欢迎新人,看公告，群名片【兮】,有事私戳管理\\n"+go_mybots.MessageAt(event.UserId).Message,
 			false)
@@ -86,6 +95,9 @@ func Test(event go_mybots.Event) {
 }
 
 func SignIn(event go_mybots.Event) {
+	if event.SelfId == 3343780376 {
+		return
+	}
 	defer func() {
 		err := recover()
 		if err != nil {

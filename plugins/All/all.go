@@ -3,6 +3,7 @@ package All
 import (
 	"Bot/Integral"
 	"Bot/plugins/daka"
+	"fmt"
 	"github.com/3343780376/go-mybots"
 	"log"
 	"regexp"
@@ -33,6 +34,9 @@ func init() {
 
 //打卡
 func Clock(event go_mybots.Event) {
+	if event.SelfId == 3343780376 {
+		return
+	}
 	if event.UserId == bot.Admin && event.Message == "打卡" {
 		do := daka.Do()
 		if do {
@@ -45,6 +49,9 @@ func Clock(event go_mybots.Event) {
 
 //关键词撤回加禁言
 func BanSpecialWord(event go_mybots.Event) {
+	if event.SelfId == 3343780376 {
+		return
+	}
 	for _, word := range words {
 		if strings.Contains(event.Message, word) {
 			err := bot.DeleteMsg(event.MessageId)
@@ -63,6 +70,9 @@ func BanSpecialWord(event go_mybots.Event) {
 
 //重启go-cqHttp
 func Restart(event go_mybots.Event, _ []string) {
+	if event.SelfId == 3343780376 {
+		return
+	}
 	if event.UserId == bot.Admin {
 		go bot.SetRestart(5)
 		_, err := bot.SendPrivateMsg(event.UserId, "重启成功", false)
@@ -74,10 +84,13 @@ func Restart(event go_mybots.Event, _ []string) {
 
 //禁言命令，禁言某人
 func BanSomeBody(event go_mybots.Event, args []string) {
-	defer func() {
-		err := recover()
-		log.Println(err)
-	}()
+	if event.SelfId == 3343780376 {
+		return
+	}
+	//defer func() {
+	//	err := recover()
+	//	log.Println(err)
+	//}()
 	Admin := []int{1662586498, 3343780376, 964637583}
 	var duration int
 	var err error
@@ -92,6 +105,7 @@ func BanSomeBody(event go_mybots.Event, args []string) {
 			} else {
 				bot.SendGroupMsg(event.GroupId, "请问禁言多长时间？"+go_mybots.MessageAt(event.UserId).Message, false)
 				nextEvent := bot.GetNextEvent(10, event.UserId)
+				fmt.Println(nextEvent.Message)
 				duration, err = strconv.Atoi(nextEvent.Message)
 				if err != nil {
 					log.Panic(err)
@@ -102,6 +116,7 @@ func BanSomeBody(event go_mybots.Event, args []string) {
 			if err != nil {
 				log.Panic(err)
 			}
+			fmt.Println(atoi)
 			err = bot.SetGroupBan(event.GroupId, atoi, duration*60)
 			if err != nil {
 				log.Panic(err)
@@ -113,6 +128,9 @@ func BanSomeBody(event go_mybots.Event, args []string) {
 
 //上传文件事件
 func UpLoadFile(event go_mybots.Event) {
+	if event.SelfId == 3343780376 {
+		return
+	}
 	xlsx := Integral.Xlsx{Event: event, Sheet: ""}
 	_, err := xlsx.Increase(5)
 	if err != nil {
