@@ -88,7 +88,7 @@ func Do() bool {
 }
 func commit(date2 date) error {
 
-	client := http.Client{Timeout: 60}
+	client := http.Client{}
 	values := url.Values{}
 	values.Set("xh", date2.Xh)
 	values.Set("xm", date2.Xm)
