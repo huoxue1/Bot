@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"strconv"
 )
 
+type name struct {
+	Id int64
+}
+
 func main() {
-	split := strings.Split("禁言 10", " ")
-	for _, s := range split {
-		fmt.Println(s)
-	}
+	n := name{Id: 13121321321321}
+	str := strconv.FormatInt(n.Id, 10)
+	fmt.Println(str)
 }

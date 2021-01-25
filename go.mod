@@ -3,7 +3,7 @@ module Bot
 go 1.14
 
 require (
-	github.com/3343780376/go-mybots v0.0.0-20210122040517-7b8e437a0c9e
+	github.com/3343780376/go-mybots v0.0.0-20210125104551-bb3ff993d5a1
 	github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/golang/protobuf v1.4.3 // indirect
@@ -14,7 +14,7 @@ require (
 	github.com/robfig/cron v1.2.0
 	github.com/ugorji/go v1.2.3 // indirect
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
-	golang.org/x/sys v0.0.0-20210119212857-b64e53b001e4 // indirect
+	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

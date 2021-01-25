@@ -87,10 +87,6 @@ func BanSomeBody(event go_mybots.Event, args []string) {
 	if event.SelfId == 3343780376 {
 		return
 	}
-	//defer func() {
-	//	err := recover()
-	//	log.Println(err)
-	//}()
 	Admin := []int{1662586498, 3343780376, 964637583}
 	var duration int
 	var err error
