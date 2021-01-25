@@ -124,6 +124,10 @@ func BanSomeBody(event go_mybots.Event, args []string) {
 
 //上传文件事件
 func UpLoadFile(event go_mybots.Event) {
+	defer func() {
+		err := recover()
+		log.Println(err)
+	}()
 	if event.SelfId == 3343780376 {
 		return
 	}
