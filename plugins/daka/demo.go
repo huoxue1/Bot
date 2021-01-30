@@ -24,9 +24,11 @@ type date struct {
 	Xh  string `json:"xh"`
 	Add string `json:"add"`
 	Num string `json:"num"`
+	QQ  int    `json:"qq"`
 }
 
 var bot = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
+var bot1 = go_mybots.Bots{Address: "127.0.0.1", Port: 5701, Admin: 3343780376}
 
 func Cr() {
 	c := cron.New()
@@ -87,7 +89,10 @@ func Do() bool {
 	return true
 }
 func commit(date2 date) error {
-
+	var err error
+	if date2.QQ != 0 {
+		_, err = bot1.SendPrivateMsg(date2.QQ, fmt.Sprintf("开始打卡\n%v\n%v\n%v", date2.Xm, date2.Xh, date2.Add), false)
+	}
 	client := http.Client{}
 	values := url.Values{}
 	values.Set("xh", date2.Xh)
@@ -109,8 +114,14 @@ func commit(date2 date) error {
 		return err
 	}
 	if d.Code == 0 {
+		if date2.QQ != 0 {
+			_, _ = bot1.SendPrivateMsg(date2.QQ, "打早卡成功", false)
+		}
 		WriteFile("打早卡成功")
 	} else if d.Code == 1 {
+		if date2.QQ != 0 {
+			_, _ = bot1.SendPrivateMsg(date2.QQ, "今日早卡已打卡", false)
+		}
 		WriteFile("今日早卡已打卡")
 	}
 	d, err = commitData(response, client, 2, date2)
@@ -118,8 +129,14 @@ func commit(date2 date) error {
 		return err
 	}
 	if d.Code == 0 {
+		if date2.QQ != 0 {
+			_, _ = bot1.SendPrivateMsg(date2.QQ, "打午卡成功", false)
+		}
 		WriteFile("打午卡成功")
 	} else if d.Code == 1 {
+		if date2.QQ != 0 {
+			_, _ = bot1.SendPrivateMsg(date2.QQ, "今日午卡已打卡", false)
+		}
 		WriteFile("今日午卡已打卡")
 	}
 	d, err = commitData(response, client, 3, date2)
@@ -127,8 +144,14 @@ func commit(date2 date) error {
 		return err
 	}
 	if d.Code == 0 {
+		if date2.QQ != 0 {
+			_, _ = bot1.SendPrivateMsg(date2.QQ, "打晚卡成功", false)
+		}
 		WriteFile("打晚卡成功")
 	} else if d.Code == 1 {
+		if date2.QQ != 0 {
+			_, _ = bot1.SendPrivateMsg(date2.QQ, "今日晚卡已打卡", false)
+		}
 		WriteFile("今日晚卡已打卡")
 	}
 	return err
