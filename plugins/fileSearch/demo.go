@@ -60,6 +60,10 @@ func Search(event go_mybots.Event, args []string) {
 	for _, i2 := range file {
 		contains := strings.Contains(i2.FileName, args[1])
 		if contains {
+			if len(m) > 25 {
+				message += fmt.Sprintf("更多结果请查询群文件")
+				break
+			}
 			searches = append(searches, search{i2.FileName, i2.FileId, i2.Busid})
 			url, _ := bot.GetGroupFileUrl(event.GroupId, i2.FileId, i2.Busid)
 			rand.Seed(time.Now().UnixNano())
@@ -99,7 +103,7 @@ func download(m map[string]string) {
 		}(i, i2)
 
 	}
-	time.Sleep(300 * time.Second)
+	time.Sleep(120 * time.Second)
 
 	for i, _ := range m {
 		for s, s2 := range File {
