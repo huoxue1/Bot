@@ -102,7 +102,11 @@ func download(m map[string]string) {
 	time.Sleep(300 * time.Second)
 
 	for i, _ := range m {
-		delete(File, i)
+		for s, s2 := range File {
+			if s2 == i {
+				delete(File, s)
+			}
+		}
 		err := os.Remove("./fiction/" + i)
 		if err != nil {
 			fmt.Println(err)
