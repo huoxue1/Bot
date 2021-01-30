@@ -34,18 +34,28 @@ func Cr() {
 	c := cron.New()
 	spec := "0 1 1 * * ?"
 	err := c.AddFunc(spec, func() {
-		IS := false
-		if !Do() {
+		//IS := false
+		//if !Do() {
+		//	if Do() {
+		//		IS = true
+		//	}
+		//} else {
+		//	IS = true
+		//}
+		//if IS {
+		//	_, _ = bot.SendPrivateMsg(3343780376, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
+		//} else {
+		//	_, _ = bot.SendPrivateMsg(3343780376, "打卡失败", false)
+		//}
+		num := 5
+		for num != 0 {
 			if Do() {
-				IS = true
+				_, _ = bot.SendPrivateMsg(3343780376, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
+				break
+			} else {
+				_, _ = bot.SendPrivateMsg(3343780376, fmt.Sprintf("打卡失败,第%v次打卡", 6-num), false)
 			}
-		} else {
-			IS = true
-		}
-		if IS {
-			_, _ = bot.SendPrivateMsg(3343780376, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
-		} else {
-			_, _ = bot.SendPrivateMsg(3343780376, "打卡失败", false)
+			num = num - 1
 		}
 	})
 	if err != nil {
