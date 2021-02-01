@@ -3,6 +3,8 @@ github.com/3343780376/go-bot v0.0.0-20210201105027-eba74ed59ebc h1:Pny6+HM1/Rjwx
 github.com/3343780376/go-bot v0.0.0-20210201105027-eba74ed59ebc/go.mod h1:wPZYK66kFhcXSOwr3K0dzJNf9lj9m2MqvzNskz/mrzc=
 github.com/3343780376/go-bot v0.0.0-20210201115459-5422cc115ca8 h1:qSYD3Zbjr1U0dND1KqmW87+5AVXfBZPhK1s/I5cv26Q=
 github.com/3343780376/go-bot v0.0.0-20210201115459-5422cc115ca8/go.mod h1:wPZYK66kFhcXSOwr3K0dzJNf9lj9m2MqvzNskz/mrzc=
+github.com/3343780376/go-bot v0.0.0-20210201120624-7822850231fd h1:Od131Bjlg7jffAAeNrRX2yAbej6tFzNjwevdEgQE2IM=
+github.com/3343780376/go-bot v0.0.0-20210201120624-7822850231fd/go.mod h1:wPZYK66kFhcXSOwr3K0dzJNf9lj9m2MqvzNskz/mrzc=
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1 h1:j56fC19WoD3z+u+ZHxm2XwRGyS1XmdSMk7058BLhdsM=
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1/go.mod h1:gXEhMjm1VadSGjAzyDlBxmdYglP8eJpYWxpwJnmXRWw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
