@@ -9,7 +9,7 @@ import (
 var bot *go_bot.Bot
 
 func botInit() {
-	bot = go_bot.GetBot(2177120078)
+	bot = go_bot.GetBot(3343780376)
 }
 
 func init() {
