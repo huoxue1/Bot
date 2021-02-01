@@ -2,24 +2,29 @@ package refresh
 
 import (
 	"Bot/Integral"
-	"github.com/3343780376/go-mybots"
+	"github.com/3343780376/go-bot"
 	"log"
 )
 
 func init() {
-	go_mybots.ViewMessage = append(go_mybots.ViewMessage, go_mybots.ViewMessageApi{OnMessage: Refresh,
-		MessageType: go_mybots.MessageTypeApi.Group, SubType: ""})
+	go_bot.ViewMessage = append(go_bot.ViewMessage, go_bot.ViewMessageApi{OnMessage: Refresh,
+		MessageType: go_bot.MessageTypeApi.Group, SubType: ""})
 	Num = 0
 	UserId = 0
 }
 
+var bot *go_bot.Bot
+
+func init() {
+	bot = go_bot.GetBot(2177120078)
+}
+
 var (
-	bot    = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
 	UserId int
 	Num    int
 )
 
-func Refresh(event go_mybots.Event) {
+func Refresh(event go_bot.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
@@ -33,8 +38,8 @@ func Refresh(event go_mybots.Event) {
 		xlsx := Integral.Xlsx{Event: event, Sheet: ""}
 		err := xlsx.XlsxInit()
 		_, err = xlsx.Decrease(2)
-		err = bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
-		_, err = bot.SendGroupMsg(event.GroupId, "你刷屏了"+go_mybots.MessageAt(event.UserId).Message, false)
+		bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
+		_ = bot.SendGroupMsg(event.GroupId, "你刷屏了"+bot.MessageAt(event.UserId).Message, false)
 		if err != nil {
 			log.Println(err)
 		}

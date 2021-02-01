@@ -3,7 +3,7 @@ package Robbery
 import (
 	"Bot/Integral"
 	"fmt"
-	bots "github.com/3343780376/go-mybots"
+	bots "github.com/3343780376/go-bot"
 	"log"
 	"math/rand"
 	"regexp"
@@ -12,10 +12,13 @@ import (
 	"time"
 )
 
-var bot = bots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
+var bot *bots.Bot
 
 func init() {
-	bots.Info, _ = bot.GetLoginInfo()
+	bot = bots.GetBot(2177120078)
+}
+
+func init() {
 	bots.ViewMessage = append(bots.ViewMessage, bots.ViewMessageApi{OnMessage: Robbery,
 		MessageType: bots.MessageTypeApi.Group, SubType: ""})
 }
@@ -54,5 +57,4 @@ func Robbery(event bots.Event) {
 		}
 		bot.SendGroupMsg(event.GroupId, msg, false)
 	}
-
 }

@@ -9,7 +9,7 @@ import (
 	_ "Bot/plugins/flash"
 	_ "Bot/plugins/refresh"
 	"fmt"
-	Bot "github.com/3343780376/go-mybots"
+	"github.com/3343780376/go-bot"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
@@ -17,19 +17,14 @@ import (
 )
 
 func main() {
-
-	hand := Bot.Hand()
-	handHttp(hand)
+	go_bot.Run("127.0.0.1:8000")
 	go daka.Cr()
-	Bot.LoadFilter("./config.json")
-	err := hand.Run("0.0.0.0:80")
-	if err != nil {
-		log.Println("端口错误")
-	}
-	log.Println("正在监听")
+	go_bot.LoadFilter("./config.json")
+	handHttp()
 }
 
-func handHttp(engine *gin.Engine) {
+func handHttp() {
+	engine := gin.New()
 	engine.LoadHTMLFiles("./templete/fiction.html")
 	engine.StaticFS("/log", http.Dir("./plugins/logs"))
 	engine.GET("/fiction", func(context *gin.Context) {
@@ -47,4 +42,8 @@ func handHttp(engine *gin.Engine) {
 		context.Header("Accept-Length", fmt.Sprintf("%d", len(file)))
 		_, _ = context.Writer.Write([]byte(file))
 	})
+	err := engine.Run("0.0.0.0:80")
+	if err != nil {
+		log.Println("端口错误")
+	}
 }

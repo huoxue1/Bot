@@ -3,7 +3,7 @@ package daka
 import (
 	"encoding/json"
 	"fmt"
-	go_mybots "github.com/3343780376/go-mybots"
+	go_bot "github.com/3343780376/go-bot"
 	"github.com/robfig/cron"
 	"io/ioutil"
 	"log"
@@ -27,8 +27,13 @@ type date struct {
 	QQ  int    `json:"qq"`
 }
 
-var bot = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
-var bot1 = go_mybots.Bots{Address: "127.0.0.1", Port: 5701, Admin: 3343780376}
+func init() {
+	bot = go_bot.GetBot(2177120078)
+	bot1 = go_bot.GetBot(3343780376)
+}
+
+var bot *go_bot.Bot
+var bot1 *go_bot.Bot
 
 func Cr() {
 	c := cron.New()
@@ -50,10 +55,10 @@ func Cr() {
 		num := 5
 		for num != 0 {
 			if Do() {
-				_, _ = bot.SendPrivateMsg(3343780376, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
+				_ = bot.SendPrivateMsg(3343780376, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
 				break
 			} else {
-				_, _ = bot.SendPrivateMsg(3343780376, fmt.Sprintf("打卡失败,第%v次打卡", 6-num), false)
+				_ = bot.SendPrivateMsg(3343780376, fmt.Sprintf("打卡失败,第%v次打卡", 6-num), false)
 			}
 			num = num - 1
 		}
@@ -101,7 +106,7 @@ func Do() bool {
 func commit(date2 date) error {
 	var err error
 	if date2.QQ != 0 {
-		_, err = bot1.SendPrivateMsg(date2.QQ, fmt.Sprintf("开始打卡\n%v\n%v\n%v", date2.Xm, date2.Xh, date2.Add), false)
+		_ = bot1.SendPrivateMsg(date2.QQ, fmt.Sprintf("开始打卡\n%v\n%v\n%v", date2.Xm, date2.Xh, date2.Add), false)
 	}
 	client := http.Client{}
 	values := url.Values{}
@@ -125,12 +130,12 @@ func commit(date2 date) error {
 	}
 	if d.Code == 0 {
 		if date2.QQ != 0 {
-			_, _ = bot1.SendPrivateMsg(date2.QQ, "打早卡成功", false)
+			_ = bot1.SendPrivateMsg(date2.QQ, "打早卡成功", false)
 		}
 		WriteFile("打早卡成功")
 	} else if d.Code == 1 {
 		if date2.QQ != 0 {
-			_, _ = bot1.SendPrivateMsg(date2.QQ, "今日早卡已打卡", false)
+			_ = bot1.SendPrivateMsg(date2.QQ, "今日早卡已打卡", false)
 		}
 		WriteFile("今日早卡已打卡")
 	}
@@ -140,12 +145,12 @@ func commit(date2 date) error {
 	}
 	if d.Code == 0 {
 		if date2.QQ != 0 {
-			_, _ = bot1.SendPrivateMsg(date2.QQ, "打午卡成功", false)
+			_ = bot1.SendPrivateMsg(date2.QQ, "打午卡成功", false)
 		}
 		WriteFile("打午卡成功")
 	} else if d.Code == 1 {
 		if date2.QQ != 0 {
-			_, _ = bot1.SendPrivateMsg(date2.QQ, "今日午卡已打卡", false)
+			_ = bot1.SendPrivateMsg(date2.QQ, "今日午卡已打卡", false)
 		}
 		WriteFile("今日午卡已打卡")
 	}
@@ -155,12 +160,12 @@ func commit(date2 date) error {
 	}
 	if d.Code == 0 {
 		if date2.QQ != 0 {
-			_, _ = bot1.SendPrivateMsg(date2.QQ, "打晚卡成功", false)
+			_ = bot1.SendPrivateMsg(date2.QQ, "打晚卡成功", false)
 		}
 		WriteFile("打晚卡成功")
 	} else if d.Code == 1 {
 		if date2.QQ != 0 {
-			_, _ = bot1.SendPrivateMsg(date2.QQ, "今日晚卡已打卡", false)
+			_ = bot1.SendPrivateMsg(date2.QQ, "今日晚卡已打卡", false)
 		}
 		WriteFile("今日晚卡已打卡")
 	}

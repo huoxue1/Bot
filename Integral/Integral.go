@@ -2,7 +2,7 @@ package Integral
 
 import (
 	"fmt"
-	gomybots "github.com/3343780376/go-mybots"
+	gomybots "github.com/3343780376/go-bot"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"log"
 	"strconv"

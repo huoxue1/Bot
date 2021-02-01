@@ -2,7 +2,7 @@ package fileSearch
 
 import (
 	"fmt"
-	"github.com/3343780376/go-mybots"
+	"github.com/3343780376/go-bot"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -15,14 +15,18 @@ import (
 
 var File = make(map[string]string)
 
-var bot = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
+var bot *go_bot.Bot
 
 func init() {
-	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand, go_mybots.ViewOnC0CommandApi{
+	bot = go_bot.GetBot(2177120078)
+}
+
+func init() {
+	go_bot.ViewOnCoCommand = append(go_bot.ViewOnCoCommand, go_bot.ViewOnC0CommandApi{
 		CoCommand: Search, Command: "searchFile", Allies: "查找"})
 }
 
-func Search(event go_mybots.Event, args []string) {
+func Search(event go_bot.Event, args []string) {
 	if event.SelfId == 3343780376 {
 		return
 	}
@@ -38,17 +42,17 @@ func Search(event go_mybots.Event, args []string) {
 		Busid    int
 	}
 	var file []search
-	files, _ := bot.GetGroupRootFiles(event.GroupId)
+	files := bot.GetGroupRootFiles(event.GroupId)
 	for _, i2 := range files.Files {
 		file = append(file, search{i2.FileName, i2.FileId, i2.Busid})
 	}
 	for _, i2 := range files.Folders {
-		folder1, _ := bot.GetGroupFilesByFolder(event.GroupId, i2.FolderId)
+		folder1 := bot.GetGroupFilesByFolder(event.GroupId, i2.FolderId)
 		for _, i := range folder1.Files {
 			file = append(file, search{i.FileName, i.FileId, i.Busid})
 		}
 		for _, i1 := range folder1.Folders {
-			folder2, _ := bot.GetGroupFilesByFolder(event.GroupId, i1.FolderId)
+			folder2 := bot.GetGroupFilesByFolder(event.GroupId, i1.FolderId)
 			for _, i3 := range folder2.Files {
 				file = append(file, search{i3.FileName, i3.FileId, i3.Busid})
 			}
@@ -65,7 +69,7 @@ func Search(event go_mybots.Event, args []string) {
 				break
 			}
 			searches = append(searches, search{i2.FileName, i2.FileId, i2.Busid})
-			url, _ := bot.GetGroupFileUrl(event.GroupId, i2.FileId, i2.Busid)
+			url := bot.GetGroupFileUrl(event.GroupId, i2.FileId, i2.Busid)
 			rand.Seed(time.Now().UnixNano())
 			str := strconv.FormatInt(time.Now().UnixNano()+rand.Int63n(1000), 10)
 			File[str] = i2.FileName

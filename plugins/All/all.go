@@ -4,7 +4,7 @@ import (
 	"Bot/Integral"
 	"Bot/plugins/daka"
 	"fmt"
-	"github.com/3343780376/go-mybots"
+	"github.com/3343780376/go-bot"
 	"log"
 	"regexp"
 	"strconv"
@@ -12,54 +12,58 @@ import (
 	"time"
 )
 
+func init() {
+	bot = go_bot.GetBot(2177120078)
+}
+
 var (
 	words = make([]string, 20)
-	bot   = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
+	bot   *go_bot.Bot
 )
 
 func init() {
 	words = []string{"傻逼", "艹", "草", "你妈", "sb", "鸡儿", "狗东西", "www", "请加群", "香港", "vpn", "WX", "嘿咻直播", "hzznyhwk", "足彩",
 		"福音QQ群", "CQ:rich", "CQ:xml,data=<?xml", "加qq群"}
-	go_mybots.ViewMessage = append(go_mybots.ViewMessage, go_mybots.ViewMessageApi{OnMessage: BanSpecialWord,
-		MessageType: go_mybots.MessageTypeApi.Group, SubType: ""})
-	go_mybots.ViewMessage = append(go_mybots.ViewMessage, go_mybots.ViewMessageApi{OnMessage: Clock,
-		MessageType: go_mybots.MessageTypeApi.Private, SubType: ""})
-	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand, go_mybots.ViewOnC0CommandApi{CoCommand: BanSomeBody,
+	go_bot.ViewMessage = append(go_bot.ViewMessage, go_bot.ViewMessageApi{OnMessage: BanSpecialWord,
+		MessageType: go_bot.MessageTypeApi.Group, SubType: ""})
+	go_bot.ViewMessage = append(go_bot.ViewMessage, go_bot.ViewMessageApi{OnMessage: Clock,
+		MessageType: go_bot.MessageTypeApi.Private, SubType: ""})
+	go_bot.ViewOnCoCommand = append(go_bot.ViewOnCoCommand, go_bot.ViewOnC0CommandApi{CoCommand: BanSomeBody,
 		Command: "ban", Allies: "禁言"})
-	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand, go_mybots.ViewOnC0CommandApi{CoCommand: Restart,
+	go_bot.ViewOnCoCommand = append(go_bot.ViewOnCoCommand, go_bot.ViewOnC0CommandApi{CoCommand: Restart,
 		Command: ".restart", Allies: ".重启"})
-	go_mybots.ViewNotice = append(go_mybots.ViewNotice, go_mybots.ViewOnNoticeApi{OnNotice: UpLoadFile,
-		NoticeType: go_mybots.NoticeTypeApi.GroupUpload, SubType: ""})
+	go_bot.ViewNotice = append(go_bot.ViewNotice, go_bot.ViewOnNoticeApi{OnNotice: UpLoadFile,
+		NoticeType: go_bot.NoticeTypeApi.GroupUpload, SubType: ""})
 }
 
 //打卡
-func Clock(event go_mybots.Event) {
+func Clock(event go_bot.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
-	if event.UserId == bot.Admin && event.Message == "打卡" {
+	if event.UserId == 3343780376 && event.Message == "打卡" {
 		do := daka.Do()
 		if do {
-			_, _ = bot.SendPrivateMsg(event.UserId, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
+			_ = bot.SendPrivateMsg(event.UserId, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
 		} else {
-			_, _ = bot.SendPrivateMsg(event.UserId, "打卡失败", false)
+			_ = bot.SendPrivateMsg(event.UserId, "打卡失败", false)
 		}
 	}
 }
 
 //关键词撤回加禁言
-func BanSpecialWord(event go_mybots.Event) {
+func BanSpecialWord(event go_bot.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
 	for _, word := range words {
 		if strings.Contains(event.Message, word) {
-			err := bot.DeleteMsg(event.MessageId)
+			bot.DeleteMsg(event.MessageId)
 			bot.SendGroupMsg(event.GroupId,
-				"该消息已经违规，请注意言行\n积分减一"+go_mybots.MessageAt(event.UserId).Message, false)
-			err = bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
+				"该消息已经违规，请注意言行\n积分减一"+bot.MessageAt(event.UserId).Message, false)
+			bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
 			xlsx := Integral.Xlsx{Event: event, Sheet: ""}
-			err = xlsx.XlsxInit()
+			err := xlsx.XlsxInit()
 			_, err = xlsx.Decrease(2)
 			if err != nil {
 				log.Println(err)
@@ -69,21 +73,18 @@ func BanSpecialWord(event go_mybots.Event) {
 }
 
 //重启go-cqHttp
-func Restart(event go_mybots.Event, _ []string) {
+func Restart(event go_bot.Event, _ []string) {
 	if event.SelfId == 3343780376 {
 		return
 	}
-	if event.UserId == bot.Admin {
+	if event.UserId == 3343780376 {
 		go bot.SetRestart(5)
-		_, err := bot.SendPrivateMsg(event.UserId, "重启成功", false)
-		if err != nil {
-			log.Println(err)
-		}
+		_ = bot.SendPrivateMsg(event.UserId, "重启成功", false)
 	}
 }
 
 //禁言命令，禁言某人
-func BanSomeBody(event go_mybots.Event, args []string) {
+func BanSomeBody(event go_bot.Event, args []string) {
 	if event.SelfId == 3343780376 {
 		return
 	}
@@ -99,7 +100,7 @@ func BanSomeBody(event go_mybots.Event, args []string) {
 				}
 
 			} else {
-				bot.SendGroupMsg(event.GroupId, "请问禁言多长时间？"+go_mybots.MessageAt(event.UserId).Message, false)
+				bot.SendGroupMsg(event.GroupId, "请问禁言多长时间？"+bot.MessageAt(event.UserId).Message, false)
 				nextEvent := bot.GetNextEvent(10, event.UserId)
 				fmt.Println(nextEvent.Message)
 				duration, err = strconv.Atoi(nextEvent.Message)
@@ -113,17 +114,13 @@ func BanSomeBody(event go_mybots.Event, args []string) {
 				log.Panic(err)
 			}
 			fmt.Println(atoi)
-			err = bot.SetGroupBan(event.GroupId, atoi, duration*60)
-			if err != nil {
-				log.Panic(err)
-			}
-
+			bot.SetGroupBan(event.GroupId, atoi, duration*60)
 		}
 	}
 }
 
 //上传文件事件
-func UpLoadFile(event go_mybots.Event) {
+func UpLoadFile(event go_bot.Event) {
 	defer func() {
 		err := recover()
 		log.Println(err)
@@ -136,5 +133,5 @@ func UpLoadFile(event go_mybots.Event) {
 	if err != nil {
 		panic(err)
 	}
-	bot.SendGroupMsg(event.GroupId, "文件上传成功，积分加5"+go_mybots.MessageAt(event.UserId).Message, false)
+	bot.SendGroupMsg(event.GroupId, "文件上传成功，积分加5"+bot.MessageAt(event.UserId).Message, false)
 }

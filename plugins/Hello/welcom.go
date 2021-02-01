@@ -3,7 +3,7 @@ package Hello
 import (
 	"Bot/Integral"
 	"fmt"
-	"github.com/3343780376/go-mybots"
+	"github.com/3343780376/go-bot"
 	"log"
 	"time"
 )
@@ -14,21 +14,24 @@ var (
 	testId = 972264701
 )
 
-var bot = go_mybots.Bots{Address: "127.0.0.1", Port: 5700, Admin: 3343780376}
+var bot *go_bot.Bot
 
 func init() {
-	go_mybots.Info, _ = bot.GetLoginInfo()
-	go_mybots.ViewNotice = append(go_mybots.ViewNotice, go_mybots.ViewOnNoticeApi{OnNotice: Test,
-		NoticeType: go_mybots.NoticeTypeApi.GroupIncrease, SubType: ""})
-	go_mybots.ViewMessage = append(go_mybots.ViewMessage, go_mybots.ViewMessageApi{OnMessage: SignIn,
-		MessageType: go_mybots.MessageTypeApi.Group, SubType: ""})
-	go_mybots.ViewMessage = append(go_mybots.ViewMessage, go_mybots.ViewMessageApi{OnMessage: Welcome,
-		MessageType: go_mybots.MessageTypeApi.Group, SubType: ""})
-	go_mybots.ViewNotice = append(go_mybots.ViewNotice, go_mybots.ViewOnNoticeApi{OnNotice: Leave,
-		NoticeType: go_mybots.NoticeTypeApi.GroupDecrease, SubType: ""})
+	bot = go_bot.GetBot(2177120078)
 }
 
-func Welcome(event go_mybots.Event) {
+func init() {
+	go_bot.ViewNotice = append(go_bot.ViewNotice, go_bot.ViewOnNoticeApi{OnNotice: Test,
+		NoticeType: go_bot.NoticeTypeApi.GroupIncrease, SubType: ""})
+	go_bot.ViewMessage = append(go_bot.ViewMessage, go_bot.ViewMessageApi{OnMessage: SignIn,
+		MessageType: go_bot.MessageTypeApi.Group, SubType: ""})
+	go_bot.ViewMessage = append(go_bot.ViewMessage, go_bot.ViewMessageApi{OnMessage: Welcome,
+		MessageType: go_bot.MessageTypeApi.Group, SubType: ""})
+	go_bot.ViewNotice = append(go_bot.ViewNotice, go_bot.ViewOnNoticeApi{OnNotice: Leave,
+		NoticeType: go_bot.NoticeTypeApi.GroupDecrease, SubType: ""})
+}
+
+func Welcome(event go_bot.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
@@ -42,49 +45,49 @@ func Welcome(event go_mybots.Event) {
 	if hour <= 9 && hour >= 5 {
 		if event.Message == "早上好" {
 			bot.SendGroupMsg(event.GroupId,
-				event.Message+m["早上好"]+go_mybots.MessageAt(event.UserId).Message, false)
+				event.Message+m["早上好"]+bot.MessageAt(event.UserId).Message, false)
 		}
 	}
 	if hour <= 12 && hour >= 8 {
 		if event.Message == "上午好" {
 			bot.SendGroupMsg(event.GroupId,
-				event.Message+m["上午好"]+go_mybots.MessageAt(event.UserId).Message, false)
+				event.Message+m["上午好"]+bot.MessageAt(event.UserId).Message, false)
 		}
 	}
 	if hour <= 14 && hour >= 10 {
 		if event.Message == "中午好好" || event.Message == "午好" {
 			bot.SendGroupMsg(event.GroupId,
-				event.Message+m["中午好"]+go_mybots.MessageAt(event.UserId).Message, false)
+				event.Message+m["中午好"]+bot.MessageAt(event.UserId).Message, false)
 		}
 	}
 	if hour <= 24 && hour >= 16 {
 		if event.Message == "晚上好" || event.Message == "晚好" {
 			bot.SendGroupMsg(event.GroupId,
-				event.Message+m["晚上好"]+go_mybots.MessageAt(event.UserId).Message, false)
+				event.Message+m["晚上好"]+bot.MessageAt(event.UserId).Message, false)
 		}
 	}
 	if hour >= 18 || hour <= 5 {
 		if event.Message == "晚安" {
 			bot.SendGroupMsg(event.GroupId,
-				event.Message+m["晚安"]+go_mybots.MessageAt(event.UserId).Message, false)
+				event.Message+m["晚安"]+bot.MessageAt(event.UserId).Message, false)
 		}
 	}
 
 }
 
-func Leave(event go_mybots.Event) {
+func Leave(event go_bot.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
 	bot.SendGroupMsg(event.GroupId, fmt.Sprintf("%v离开了本群", event.UserId), false)
 }
 
-func Test(event go_mybots.Event) {
+func Test(event go_bot.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
 	if event.GroupId == xi {
-		bot.SendGroupMsg(event.GroupId, "欢迎新人,看公告，群名片【兮】,有事私戳管理\\n"+go_mybots.MessageAt(event.UserId).Message,
+		bot.SendGroupMsg(event.GroupId, "欢迎新人,看公告，群名片【兮】,有事私戳管理\\n"+bot.MessageAt(event.UserId).Message,
 			false)
 	} else if event.GroupId == fei {
 		bot.SendGroupMsg(event.GroupId,
@@ -94,7 +97,7 @@ func Test(event go_mybots.Event) {
 	}
 }
 
-func SignIn(event go_mybots.Event) {
+func SignIn(event go_bot.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
