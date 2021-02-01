@@ -11,11 +11,12 @@ func init() {
 		MessageType: go_bot.MessageTypeApi.Group, SubType: ""})
 	Num = 0
 	UserId = 0
+	go botInit()
 }
 
 var bot *go_bot.Bot
 
-func init() {
+func botInit() {
 	bot = go_bot.GetBot(2177120078)
 }
 

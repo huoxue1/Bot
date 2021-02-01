@@ -27,9 +27,12 @@ type date struct {
 	QQ  int    `json:"qq"`
 }
 
-func init() {
+func botInit() {
 	bot = go_bot.GetBot(2177120078)
 	bot1 = go_bot.GetBot(3343780376)
+}
+func init() {
+	go botInit()
 }
 
 var bot *go_bot.Bot

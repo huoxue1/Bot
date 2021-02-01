@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func init() {
+func botInit() {
 	bot = go_bot.GetBot(2177120078)
 }
 
@@ -22,6 +22,7 @@ var (
 )
 
 func init() {
+	go botInit()
 	words = []string{"傻逼", "艹", "草", "你妈", "sb", "鸡儿", "狗东西", "www", "请加群", "香港", "vpn", "WX", "嘿咻直播", "hzznyhwk", "足彩",
 		"福音QQ群", "CQ:rich", "CQ:xml,data=<?xml", "加qq群"}
 	go_bot.ViewMessage = append(go_bot.ViewMessage, go_bot.ViewMessageApi{OnMessage: BanSpecialWord,

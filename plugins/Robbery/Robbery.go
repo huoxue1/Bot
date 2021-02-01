@@ -14,11 +14,12 @@ import (
 
 var bot *bots.Bot
 
-func init() {
+func botInit() {
 	bot = bots.GetBot(2177120078)
 }
 
 func init() {
+	go botInit()
 	bots.ViewMessage = append(bots.ViewMessage, bots.ViewMessageApi{OnMessage: Robbery,
 		MessageType: bots.MessageTypeApi.Group, SubType: ""})
 }

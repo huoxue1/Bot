@@ -8,11 +8,12 @@ import (
 
 var bot *go_bot.Bot
 
-func init() {
+func botInit() {
 	bot = go_bot.GetBot(2177120078)
 }
 
 func init() {
+	go botInit()
 	go_bot.ViewMessage = append(go_bot.ViewMessage, go_bot.ViewMessageApi{OnMessage: Flash,
 		MessageType: "", SubType: ""})
 }

@@ -17,11 +17,12 @@ var File = make(map[string]string)
 
 var bot *go_bot.Bot
 
-func init() {
+func botInit() {
 	bot = go_bot.GetBot(2177120078)
 }
 
 func init() {
+	go botInit()
 	go_bot.ViewOnCoCommand = append(go_bot.ViewOnCoCommand, go_bot.ViewOnC0CommandApi{
 		CoCommand: Search, Command: "searchFile", Allies: "查找"})
 }

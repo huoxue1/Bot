@@ -17,10 +17,7 @@ var (
 var bot *go_bot.Bot
 
 func init() {
-	bot = go_bot.GetBot(2177120078)
-}
-
-func init() {
+	go botInit()
 	go_bot.ViewNotice = append(go_bot.ViewNotice, go_bot.ViewOnNoticeApi{OnNotice: Test,
 		NoticeType: go_bot.NoticeTypeApi.GroupIncrease, SubType: ""})
 	go_bot.ViewMessage = append(go_bot.ViewMessage, go_bot.ViewMessageApi{OnMessage: SignIn,
@@ -29,6 +26,10 @@ func init() {
 		MessageType: go_bot.MessageTypeApi.Group, SubType: ""})
 	go_bot.ViewNotice = append(go_bot.ViewNotice, go_bot.ViewOnNoticeApi{OnNotice: Leave,
 		NoticeType: go_bot.NoticeTypeApi.GroupDecrease, SubType: ""})
+}
+
+func botInit() {
+	bot = go_bot.GetBot(2177120078)
 }
 
 func Welcome(event go_bot.Event) {
@@ -101,12 +102,12 @@ func SignIn(event go_bot.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
-	defer func() {
-		err := recover()
-		if err != nil {
-			log.Println(err)
-		}
-	}()
+	//defer func() {
+	//	err := recover()
+	//	if err != nil {
+	//		log.Println(err)
+	//	}
+	//}()
 	if event.Message == "签到" {
 		xlsx := Integral.Xlsx{Event: event, Sheet: "Sheet1"}
 		err := xlsx.XlsxInit()
