@@ -27,7 +27,6 @@ func main() {
 
 func handHttp() {
 	engine := gin.New()
-
 	gin.SetMode(gin.ReleaseMode)
 	engine.LoadHTMLFiles("./templete/fiction.html")
 	engine.StaticFS("/log", http.Dir("./plugins/logs"))
