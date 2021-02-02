@@ -20,7 +20,7 @@ import (
 func main() {
 	go daka.Cr()
 	go_bot.LoadFilter("./config.json")
-	handHttp()
+	go handHttp()
 	go_bot.Run("127.0.0.1:8000")
 
 }
