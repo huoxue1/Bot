@@ -75,10 +75,11 @@ func Search(event go_bot.Event, args []string) {
 			str := strconv.FormatInt(time.Now().UnixNano()+rand.Int63n(1000), 10)
 			File[str] = i2.FileName
 			m[i2.FileName] = url.Url
-			message += fmt.Sprintf("\n文件名：%s\n\n下载链接：http://47.110.228.1/fiction/%s",
+			message += fmt.Sprintf("\n文件名：%s\n",
 				i2.FileName, str)
 		}
 	}
+	message += "结果请查看http://47.110.228.1/fiction"
 	go download(m)
 	bot.SendGroupMsg(event.GroupId, message, false)
 }
