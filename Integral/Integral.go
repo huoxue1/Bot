@@ -105,6 +105,7 @@ func (x Xlsx) Increase(n int) (bool, error) {
 //减少n个积分
 func (x Xlsx) Decrease(n int) (bool, error) {
 	defer file.Save()
+
 	lock.Lock()
 	defer lock.Unlock()
 	var err error
