@@ -17,16 +17,24 @@ import (
 )
 
 func main() {
-	go_bot.Run("127.0.0.1:8000")
 	go daka.Cr()
 	go_bot.LoadFilter("./config.json")
 	handHttp()
+	go_bot.Run("127.0.0.1:8000")
+
 }
 
 func handHttp() {
 	engine := gin.New()
+	gin.SetMode(gin.ReleaseMode)
 	engine.LoadHTMLFiles("./templete/fiction.html")
 	engine.StaticFS("/log", http.Dir("./plugins/logs"))
+
+	engine.POST("/hook", func(context *gin.Context) {
+		date, _ := ioutil.ReadAll(context.Request.Body)
+		log.Println("来自github" + string(date))
+	})
+
 	engine.GET("/fiction", func(context *gin.Context) {
 		context.HTML(http.StatusOK, "fiction.html", gin.H{"content": fileSearch.File})
 	})
