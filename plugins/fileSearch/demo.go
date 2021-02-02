@@ -76,7 +76,7 @@ func Search(event go_bot.Event, args []string) {
 			File[str] = i2.FileName
 			m[i2.FileName] = url.Url
 			message += fmt.Sprintf("\n文件名：%s\n",
-				i2.FileName, str)
+				i2.FileName)
 		}
 	}
 	message += "结果请查看http://47.110.228.1/fiction"
