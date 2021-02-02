@@ -6,6 +6,7 @@ import (
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"log"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -14,6 +15,7 @@ var (
 	rows  [][]string
 	err   error
 	sheet string
+	lock  sync.Mutex
 )
 
 type Xlsx struct {
@@ -39,7 +41,9 @@ func (x Xlsx) XlsxInit() error {
 		sheet = "other"
 	}
 	var err error
+	lock.Lock()
 	file, err = excelize.OpenFile("../Bot/templete/group.xlsx")
+	lock.Unlock()
 	if err != nil {
 		return err
 	}
@@ -49,12 +53,13 @@ func (x Xlsx) XlsxInit() error {
 
 //插入积分数据
 func (x Xlsx) InsertData() error {
-
+	lock.Lock()
 	err = file.SetCellValue(sheet, fmt.Sprintf("A%d", len(rows)+1), x.Event.UserId)
 	err = file.SetCellValue(sheet, fmt.Sprintf("B%d", len(rows)+1), 10)
 	err = file.SetCellValue(sheet, fmt.Sprintf("C%d", len(rows)+1), x.Event.Sender.Card)
 	err = file.SetCellValue(sheet, fmt.Sprintf("D%d", len(rows)+1), 0)
 	err = file.Save()
+	lock.Unlock()
 	return err
 }
 
@@ -77,6 +82,8 @@ func (x Xlsx) IsExit() bool {
 
 //增加n个积分
 func (x Xlsx) Increase(n int) (bool, error) {
+	lock.Lock()
+	defer lock.Unlock()
 	defer file.Save()
 	var err error
 	if !x.IsExit() {
@@ -98,6 +105,8 @@ func (x Xlsx) Increase(n int) (bool, error) {
 //减少n个积分
 func (x Xlsx) Decrease(n int) (bool, error) {
 	defer file.Save()
+	lock.Lock()
+	defer lock.Unlock()
 	var err error
 	if !x.IsExit() {
 		err = x.InsertData()
