@@ -3,7 +3,7 @@ module Bot
 go 1.14
 
 require (
-	github.com/3343780376/go-bot v0.0.0-20210201121206-f2f099ff9826
+	github.com/3343780376/go-bot v0.0.0-20210202040828-a263810edd7a
 	github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1
 	github.com/gin-gonic/gin v1.6.3
 	github.com/leodido/go-urn v1.2.1 // indirect
