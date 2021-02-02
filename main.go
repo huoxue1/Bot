@@ -15,6 +15,7 @@ import (
 	"log"
 	"net/http"
 	"os/exec"
+	"strings"
 )
 
 func main() {
@@ -32,7 +33,8 @@ func handHttp() {
 	engine.StaticFS("/log", http.Dir("./plugins/logs"))
 
 	engine.POST("/hook", func(context *gin.Context) {
-		if context.Request.Header.Get("User-Agent") == "GitHub-Hookshot/7905f48" {
+		if strings.Contains(context.Request.Header.Get("User-Agent"), "GitHub") {
+			log.Println("开始执行pull")
 			exec.Command("/bin/sh", "-c", "git pull https://github.com/3343780376/Bot")
 		}
 	})
