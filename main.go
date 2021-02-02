@@ -14,6 +14,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os/exec"
 )
 
 func main() {
@@ -32,8 +33,9 @@ func handHttp() {
 	engine.StaticFS("/log", http.Dir("./plugins/logs"))
 
 	engine.POST("/hook", func(context *gin.Context) {
-		date, _ := ioutil.ReadAll(context.Request.Body)
-		log.Println("来自github" + string(date))
+		if context.Request.Header.Get("User-Agent") == "GitHub-Hookshot/7905f48" {
+			exec.Command("/bin/sh", "-c", "git pull https://github.com/3343780376/Bot")
+		}
 	})
 
 	engine.GET("/fiction", func(context *gin.Context) {
