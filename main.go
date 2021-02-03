@@ -43,7 +43,7 @@ func handHttp(engine *gin.Engine) {
 			command := exec.Command("/bin/sh", "-c", "git pull https://github.com/3343780376/Bot")
 			err := command.Start()
 			if err != nil {
-				log.Println("命令执行失败了")
+				log.Println("命令执行失败")
 			}
 
 		}
