@@ -1,7 +1,7 @@
 package Robbery
 
 import (
-	"Bot/Integral"
+	"Bot/model"
 	"fmt"
 	bots "github.com/3343780376/go-mybots"
 	"log"
@@ -21,6 +21,12 @@ func init() {
 }
 
 func Robbery(event bots.Event) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 	if event.SelfId == 3343780376 {
 		return
 	}
@@ -30,27 +36,22 @@ func Robbery(event bots.Event) {
 		if err != nil {
 			log.Panic(err)
 		}
-		xlsx1 := Integral.Xlsx{Event: event, Sheet: "Sheet1"}
-		xlsx2 := Integral.Xlsx{Event: bots.Event{UserId: int(split), Sender: bots.Senders{Card: ""}}, Sheet: "Sheet1"}
-		err = xlsx2.XlsxInit()
-		err = xlsx1.XlsxInit()
+		connect1 := model.DbInit()
+		defer connect1.Close()
 		rand.Seed(time.Now().UnixNano())
 		n := rand.Intn(6) - 3
 		var msg string
 		if n < 0 {
-			_, err = xlsx1.Decrease(-n)
-			_, err = xlsx2.Increase(-n)
+			connect1.Update(n, event)
+			connect1.Update(-n, bots.Event{UserId: int(split)})
 			msg = fmt.Sprintf("打劫失败，被对方抢走了%d分，祝你下次好运\n[CQ:at,qq=%d]", -n, event.UserId)
 		} else if n > 0 {
-			_, err = xlsx2.Decrease(n)
-			_, err = xlsx1.Increase(n)
+			connect1.Update(-n, event)
+			connect1.Update(n, bots.Event{UserId: int(split)})
 			msg = fmt.Sprintf("打劫成功，恭喜你抢到了%d个积分。\n[CQ:at,qq=%d]", n, event.UserId)
 		} else {
-			_, err = xlsx1.Decrease(1)
+			connect1.Update(-1, event)
 			msg = fmt.Sprintf("你在路上摔倒了，打劫任务失败，积分减一，祝你下次好运[CQ:at,qq=%d]", event.UserId)
-		}
-		if err != nil {
-			log.Panic(err)
 		}
 		bot.SendGroupMsg(event.GroupId, msg, false)
 	}

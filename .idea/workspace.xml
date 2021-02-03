@@ -20,8 +20,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="670338bf-b134-41fb-9956-da5c6d8da7f7" name="默认更改列表" comment="commit">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model/file.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model/mysql.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model/sign.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/fileSearch/csv.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templete/fileData.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/All/all.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/All/all.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/Hello/welcom.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/Hello/welcom.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/Robbery/Robbery.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/Robbery/Robbery.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/fileSearch/demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/fileSearch/demo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/refresh/Refrensh.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/refresh/Refrensh.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,9 +61,12 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/plugins/daka" />

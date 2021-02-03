@@ -1,7 +1,7 @@
 package All
 
 import (
-	"Bot/Integral"
+	"Bot/model"
 	"Bot/plugins/daka"
 	"fmt"
 	"github.com/3343780376/go-mybots"
@@ -54,16 +54,13 @@ func BanSpecialWord(event go_mybots.Event) {
 	}
 	for _, word := range words {
 		if strings.Contains(event.Message, word) {
-			err := bot.DeleteMsg(event.MessageId)
+			_ = bot.DeleteMsg(event.MessageId)
 			bot.SendGroupMsg(event.GroupId,
-				"该消息已经违规，请注意言行\n积分减一"+go_mybots.MessageAt(event.UserId).Message, false)
-			err = bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
-			xlsx := Integral.Xlsx{Event: event, Sheet: ""}
-			err = xlsx.XlsxInit()
-			_, err = xlsx.Decrease(2)
-			if err != nil {
-				log.Println(err)
-			}
+				"该消息已经违规，请注意言行\n积分减少2"+go_mybots.MessageAt(event.UserId).Message, false)
+			_ = bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
+			connect := model.DbInit()
+			defer connect.Close()
+			connect.Update(-2, event)
 		}
 	}
 }
@@ -131,10 +128,7 @@ func UpLoadFile(event go_mybots.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
-	xlsx := Integral.Xlsx{Event: event, Sheet: ""}
-	_, err := xlsx.Increase(5)
-	if err != nil {
-		panic(err)
-	}
+	connect := model.DbInit()
+	connect.Update(5, event)
 	bot.SendGroupMsg(event.GroupId, "文件上传成功，积分加5"+go_mybots.MessageAt(event.UserId).Message, false)
 }

@@ -1,11 +1,11 @@
 package fileSearch
 
 import (
+	"archive/zip"
 	"fmt"
 	"github.com/3343780376/go-mybots"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -47,31 +47,67 @@ func Search(event go_mybots.Event, args []string) {
 		for _, i := range folder1.Files {
 			file = append(file, search{i.FileName, i.FileId, i.Busid})
 		}
-		for _, i1 := range folder1.Folders {
-			folder2, _ := bot.GetGroupFilesByFolder(event.GroupId, i1.FolderId)
-			for _, i3 := range folder2.Files {
-				file = append(file, search{i3.FileName, i3.FileId, i3.Busid})
+	}
+	c := CsvInit()
+	for i, f := range file {
+		if !strings.HasSuffix(f.FileName, ".zip") {
+			c.CsvWrite([]string{
+				f.FileName,
+				f.FileId,
+				strconv.Itoa(f.Busid),
+				strconv.FormatBool(false), //是否是属于压缩包下文件
+				strconv.FormatBool(false), //自身是否是压缩包文件
+				""})
+			file = append(file[:i], file[i+1:]...)
+		} else {
+			c.CsvWrite([]string{
+				f.FileName,
+				f.FileId,
+				strconv.Itoa(f.Busid),
+				strconv.FormatBool(false),
+				strconv.FormatBool(true),
+				"",
+			})
+			url, _ := bot.GetGroupFileUrl(event.GroupId, f.FileId, f.Busid)
+			downloadFile(f.FileName, url.Url)
+			zipReader, err := zip.OpenReader("./fiction/zip/" + f.FileName)
+			if err != nil {
+				panic(err.Error())
+			}
+			for _, f2 := range zipReader.File {
+				c.CsvWrite([]string{
+					f2.Name,
+					"",
+					"",
+					strconv.FormatBool(true),
+					strconv.FormatBool(true),
+					f.FileId,
+				})
 			}
 		}
 	}
-	message := "查询结果为：\n"
-	searches := []search{}
-	m := make(map[string]string)
-	for _, i2 := range file {
-		contains := strings.Contains(i2.FileName, args[1])
-		if contains {
-			searches = append(searches, search{i2.FileName, i2.FileId, i2.Busid})
-			url, _ := bot.GetGroupFileUrl(event.GroupId, i2.FileId, i2.Busid)
-			rand.Seed(time.Now().UnixNano())
-			str := strconv.FormatInt(time.Now().UnixNano()+rand.Int63n(1000), 10)
-			File[str] = i2.FileName
-			m[i2.FileName] = url.Url
-			message += fmt.Sprintf("\n文件名：%s\n\n下载链接：http://47.110.228.1/fiction/%s",
-				i2.FileName, str)
-		}
+
+}
+
+func downloadFile(fileName string, url string) {
+	response, err := http.Get(url)
+	if err != nil {
+		panic(err.Error())
 	}
-	go download(m)
-	bot.SendGroupMsg(event.GroupId, message, false)
+	defer response.Body.Close()
+	content, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+	file, err := os.OpenFile("./fiction/zip/"+fileName, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		panic(err.Error())
+	}
+	_, err = file.WriteString(string(content))
+	if err != nil {
+		panic(err.Error())
+	}
+	defer file.Close()
 }
 
 func download(m map[string]string) {
