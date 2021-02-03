@@ -20,20 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="670338bf-b134-41fb-9956-da5c6d8da7f7" name="默认更改列表" comment="commit">
-      <change afterPath="$PROJECT_DIR$/plugins/flash/flash.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/All/all.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/All/all.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/Hello/welcom.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/Hello/welcom.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/Robbery/Robbery.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/Robbery/Robbery.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/daka/demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/daka/demo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/fileSearch/demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/fileSearch/demo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/refresh/Refrensh.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/refresh/Refrensh.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp.go" beforeDir="false" afterPath="$PROJECT_DIR$/temp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templete/group.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/templete/group.xlsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
