@@ -38,7 +38,7 @@ func handHttp(engine *gin.Engine) {
 	engine.POST("/hook", func(context *gin.Context) {
 		date, _ := ioutil.ReadAll(context.Request.Body)
 		if strings.Contains(context.Request.Header.Get("User-Agent"), "GitHub") &&
-			strings.Contains(string(date), `"ref": "refs/heads/master"`) {
+			strings.Contains(string(date), `"ref": "refs/heads/dev"`) {
 			log.Println("开始执行pull ")
 			command := exec.Command("/bin/sh", "-c", "git pull https://github.com/3343780376/Bot")
 			err := command.Start()
