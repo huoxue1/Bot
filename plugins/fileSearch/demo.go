@@ -80,7 +80,7 @@ func FileSearch(event go_mybots.Event, args []string) {
 		return
 	} else {
 		files := connect.FileSearch(event.GroupId)
-		if event.UserId == 3343780376 && args[2] == "all" {
+		if event.UserId == 3343780376 && len(args) > 2 && args[2] == "all" {
 			files = connect.FileSearchALL()
 		}
 		message := ""
