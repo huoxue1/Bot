@@ -38,7 +38,7 @@ func handHttp(engine *gin.Engine) {
 	engine.POST("/hook", func(context *gin.Context) {
 		if strings.Contains(context.Request.Header.Get("User-Agent"), "GitHub") {
 			log.Println("开始执行pull ")
-			command := exec.Command("/bin/sh", "-c", "git pull")
+			command := exec.Command("/bin/sh", "-c", "git reset --hard", "git pull")
 			err := command.Start()
 			if err != nil {
 				log.Println("命令执行失败")
