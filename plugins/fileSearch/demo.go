@@ -65,7 +65,7 @@ func GetFile(event go_mybots.Event, args []string) {
 			log.Println(s, s2)
 		}
 
-		bot.SendGroupMsg(event.GroupId, args[1]+"文件\n<"+file.FileName+">\n的下载链接为：\n"+"[CQ:face,id=229]http://47.110.228.1/fiction/"+str+"[CQ:face,id=229]\n"+go_mybots.MessageAt(event.UserId).Message, false)
+		bot.SendGroupMsg(event.GroupId, args[1]+"文件\n<"+file.FileName+">\n的下载链接为：\n"+"http://47.110.228.1/fiction/"+str+"\n"+go_mybots.MessageAt(event.UserId).Message, false)
 	}
 }
 
@@ -129,7 +129,6 @@ func FileInit(event go_mybots.Event, args []string) {
 			file = append(file, search{i.FileName, i.FileId, i.Busid})
 		}
 	}
-	c := CsvInit()
 	connect := model.DbInit()
 	defer connect.Close()
 	for i, f := range file {
@@ -155,14 +154,6 @@ func FileInit(event go_mybots.Event, args []string) {
 				IsZip:    true,
 				GroupId:  strconv.Itoa(event.GroupId),
 				Pid:      0,
-			})
-			c.CsvWrite([]string{
-				f.FileName,
-				f.FileId,
-				strconv.Itoa(f.Busid),
-				strconv.FormatBool(false),
-				strconv.FormatBool(true),
-				"",
 			})
 			url, _ := bot.GetGroupFileUrl(event.GroupId, f.FileId, f.Busid)
 			downloadFile(f.FileName, url.Url)
