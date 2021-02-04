@@ -26,6 +26,8 @@ func init() {
 		MessageType: go_mybots.MessageTypeApi.Private, SubType: ""})
 	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand, go_mybots.ViewOnC0CommandApi{CoCommand: BanSomeBody,
 		Command: "ban", Allies: "禁言"})
+	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand, go_mybots.ViewOnC0CommandApi{CoCommand: Help,
+		Command: ".help", Allies: "机器人帮助"})
 	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand, go_mybots.ViewOnC0CommandApi{CoCommand: Restart,
 		Command: ".restart", Allies: ".重启"})
 	go_mybots.ViewNotice = append(go_mybots.ViewNotice, go_mybots.ViewOnNoticeApi{OnNotice: UpLoadFile,
@@ -49,17 +51,19 @@ func Clock(event go_mybots.Event) {
 
 //关键词撤回加禁言
 func BanSpecialWord(event go_mybots.Event) {
+
 	if event.SelfId == 3343780376 {
 		return
 	}
+	connect := model.DbInit()
+	defer connect.Close()
 	for _, word := range words {
 		if strings.Contains(event.Message, word) {
 			_ = bot.DeleteMsg(event.MessageId)
 			bot.SendGroupMsg(event.GroupId,
 				"该消息已经违规，请注意言行\n积分减少2"+go_mybots.MessageAt(event.UserId).Message, false)
 			_ = bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
-			connect := model.DbInit()
-			defer connect.Close()
+
 			connect.Update(-2, event)
 		}
 	}
@@ -129,6 +133,35 @@ func UpLoadFile(event go_mybots.Event) {
 		return
 	}
 	connect := model.DbInit()
+	defer connect.Close()
 	connect.Update(5, event)
+	isZip := true
+	if strings.Contains(event.File.Name, ".zip") {
+		isZip = true
+	} else {
+		isZip = false
+	}
+	connect.FileInsert(model.File{
+		Id:       0,
+		FileName: event.File.Name,
+		FileId:   event.File.Id,
+		BusId:    int(event.File.Busid),
+		IsChild:  false,
+		IsZip:    isZip,
+		GroupId:  strconv.Itoa(event.GroupId),
+		Pid:      0,
+	})
 	bot.SendGroupMsg(event.GroupId, "文件上传成功，积分加5"+go_mybots.MessageAt(event.UserId).Message, false)
+}
+
+func Help(event go_mybots.Event, args []string) {
+	if event.SelfId == 3343780376 {
+		return
+	}
+	message := "欢迎使用本机器人：\r\n机器人主动命令有以下几个\r\n\r\n" +
+		"1: cmd:打劫， [CQ:face,id=229]打劫你所艾特的人，打劫成功随机得到1-3个积分，打劫失败随机失去1-3个积分\r\n\r\n" +
+		"2: cmd:查找， [CQ:face,id=229]群文件查找功能，能够获取到文件Id和文件名\r\n\r\n" +
+		"3: cmd:获取文件， [CQ:face,id=229]能够获取到你所指定的对应文件的下载链接\r\n" +
+		"小提示：m命令所需要的参数和命令之间相隔一个空格，例如：获取文件 199\n[CQ:face,id=229][CQ:face,id=229]"
+	bot.SendGroupMsg(event.GroupId, message, false)
 }

@@ -25,6 +25,7 @@
         <method importPath="github.com/360EntSecGroup-Skylar/excelize/v2" receiver="*File" name="Save" />
         <method importPath="io" receiver="ReadCloser" name="Close" />
         <method importPath="os" receiver="*File" name="Close" />
+        <method importPath="archive/zip" receiver="*ReadCloser" name="Close" />
       </methods>
     </inspection_tool>
   </profile>
