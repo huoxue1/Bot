@@ -159,8 +159,7 @@ func Help(event go_mybots.Event, args []string) {
 		return
 	}
 	message := "欢迎使用本机器人：\r\n机器人主动命令有以下几个\r\n\r\n" +
-		"1: cmd:打劫， 打劫你所艾特的人，打劫成功随机得到1-3个积分，打劫失败随机失去1-3个积分\r\n\r\n" +
-		"2: cmd:查找， 群文件查找功能，能够获取到文件Id和文件名\r\n\r\n" +
-		"3: cmd:获取文件， 能够获取到你所指定的对应文件的下载链接\r\n"
+		"1: cmd:查找， 群文件查找功能，能够获取到文件Id和文件名\r\n\r\n" +
+		"2: cmd:获取文件， 能够获取到你所指定的对应文件的下载链接\r\n"
 	bot.SendGroupMsg(event.GroupId, message, false)
 }
