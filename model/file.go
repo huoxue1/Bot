@@ -42,6 +42,16 @@ func (con *Connect) FileSearch(groupId int) []File {
 	}
 }
 
+func (con *Connect) FileSearchALL() []File {
+	var fileList []File
+	err := con.Db.Select(&fileList, "select * from file where isZip = 0")
+	if err != nil {
+		return []File{}
+	} else {
+		return fileList
+	}
+}
+
 func (con *Connect) FileSearchById(id int) File {
 	var file File
 	err := con.Db.Get(&file, "select * from file where Id = ?", id)
