@@ -3,9 +3,13 @@ package All
 import (
 	"Bot/model"
 	"Bot/plugins/daka"
+	"archive/zip"
 	"fmt"
 	"github.com/3343780376/go-mybots"
+	"io/ioutil"
 	"log"
+	"net/http"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -138,6 +142,27 @@ func UpLoadFile(event go_mybots.Event) {
 	isZip := true
 	if strings.Contains(event.File.Name, ".zip") {
 		isZip = true
+		url, _ := bot.GetGroupFileUrl(event.GroupId, event.File.Id, int(event.File.Busid))
+		downloadFile(event.File.Name, url.Url)
+		zipReader, err := zip.OpenReader("./fiction/zip/" + event.File.Name)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		for _, f2 := range zipReader.File {
+			connect.FileInsert(model.File{
+				Id:       0,
+				FileName: f2.Name,
+				FileId:   "",
+				BusId:    0,
+				IsChild:  true,
+				IsZip:    false,
+				GroupId:  strconv.Itoa(event.GroupId),
+				Pid:      connect.FileSearchId(event.File.Id).Id,
+			})
+		}
+		_ = zipReader.Close()
+		_ = os.Remove("./fiction/zip/" + event.File.Name)
 	} else {
 		isZip = false
 	}
@@ -162,4 +187,25 @@ func Help(event go_mybots.Event, args []string) {
 		"1: cmd:查找， 群文件查找功能，能够获取到文件Id和文件名\r\n\r\n" +
 		"2: cmd:获取文件， 能够获取到你所指定的对应文件的下载链接\r\n"
 	bot.SendGroupMsg(event.GroupId, message, false)
+}
+
+func downloadFile(fileName string, url string) {
+	response, err := http.Get(url)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer response.Body.Close()
+	content, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+	file, err := os.OpenFile("./fiction/zip/"+fileName, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		panic(err.Error())
+	}
+	_, err = file.WriteString(string(content))
+	if err != nil {
+		panic(err.Error())
+	}
+	defer file.Close()
 }
