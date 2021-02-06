@@ -45,6 +45,7 @@ func GetFile(event go_mybots.Event, args []string) {
 			bot.SendGroupMsg(event.GroupId, "缺少查找参数"+go_mybots.MessageAt(event.UserId).Message, false)
 			return
 		}
+
 		rand.Seed(time.Now().Unix())
 		str := strconv.FormatInt(time.Now().Unix(), 10) + strconv.FormatInt(rand.Int63n(10000), 10)
 		file := connect.FileSearchById(Id)
@@ -80,7 +81,7 @@ func FileSearch(event go_mybots.Event, args []string) {
 		return
 	} else {
 		files := connect.FileSearch(event.GroupId)
-		if event.UserId == 3343780376 && len(args) > 2 && args[2] == "all" {
+		if event.UserId == 3343780376 && event.GroupId == 972264701 {
 			files = connect.FileSearchALL()
 		}
 		message := ""
