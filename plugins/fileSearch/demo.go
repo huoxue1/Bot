@@ -31,6 +31,12 @@ func init() {
 }
 
 func GetFile(event go_mybots.Event, args []string) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 	if event.SelfId == 3343780376 {
 
 	}
