@@ -214,6 +214,12 @@ func downloadFile(fileName string, url string) {
 }
 
 func Download(fileName, randNum string, url string, isZip bool, resultFileName string) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 	client := http.Client{}
 	if isZip {
 		response, err := client.Get(url)
