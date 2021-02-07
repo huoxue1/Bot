@@ -1,8 +1,6 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
-github.com/3343780376/go-mybots v0.0.0-20210207005643-d07da3bc6830 h1:qm1wPSASKfxsjv0wSfYn82INQsgb3bVQBpzcp8d3160=
-github.com/3343780376/go-mybots v0.0.0-20210207005643-d07da3bc6830/go.mod h1:oNRLiPWs0g8AA/jX7V5OMmAe2+ncErlb5NoFHSlwjUE=
-github.com/3343780376/go-mybots v0.0.0-20210207012201-a6510838176f h1:vB+XqoVdiwch6jm6XqFBPziY3aT3m+ud3eQZ9Qts8Qo=
-github.com/3343780376/go-mybots v0.0.0-20210207012201-a6510838176f/go.mod h1:oNRLiPWs0g8AA/jX7V5OMmAe2+ncErlb5NoFHSlwjUE=
+github.com/3343780376/go-mybots v0.0.0-20210207020251-f134c10734cd h1:oD2/1+Mcfu1NcIInqChhhSrE7C8obBq7ZC7yzG/mmGA=
+github.com/3343780376/go-mybots v0.0.0-20210207020251-f134c10734cd/go.mod h1:oNRLiPWs0g8AA/jX7V5OMmAe2+ncErlb5NoFHSlwjUE=
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1 h1:j56fC19WoD3z+u+ZHxm2XwRGyS1XmdSMk7058BLhdsM=
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1/go.mod h1:gXEhMjm1VadSGjAzyDlBxmdYglP8eJpYWxpwJnmXRWw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
