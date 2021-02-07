@@ -215,6 +215,7 @@ func Download(event go_mybots.Event, fileName, randNum string, url string, isZip
 		}
 	}()
 	client := http.Client{}
+	path, _ := os.Getwd()
 	if isZip {
 		response, err := client.Get(url)
 		if err != nil {
@@ -247,10 +248,12 @@ func Download(event go_mybots.Event, fileName, randNum string, url string, isZip
 
 		}
 		if event.GroupId == 17185204 {
-			err = bot.UploadGroupFile(event.GroupId, "./fiction/"+resultFileName, resultFileName, "/265a8aa2-11e8-4465-9e2a-ad8b09925959")
+			err = bot.UploadGroupFile(event.GroupId, path+"/fiction/"+resultFileName, resultFileName, "/265a8aa2-11e8-4465-9e2a-ad8b09925959")
 
 		} else if event.GroupId == 727429388 {
-			err = bot.UploadGroupFile(event.GroupId, "./fiction/"+resultFileName, resultFileName, "/d06f2cc2-981c-4249-ab83-dde7e340670a")
+			err = bot.UploadGroupFile(event.GroupId, path+"/fiction/"+resultFileName, resultFileName, "/d06f2cc2-981c-4249-ab83-dde7e340670a")
+		} else {
+			err = bot.UploadGroupFile(event.GroupId, path+"/fiction/"+resultFileName, resultFileName, "")
 
 		}
 		if err != nil {
@@ -287,11 +290,12 @@ func Download(event go_mybots.Event, fileName, randNum string, url string, isZip
 		}
 		file.Close()
 		if event.GroupId == 17185204 {
-			err = bot.UploadGroupFile(event.GroupId, "./fiction/"+fileName, fileName, "/265a8aa2-11e8-4465-9e2a-ad8b09925959")
+			err = bot.UploadGroupFile(event.GroupId, path+"/fiction/"+fileName, fileName, "/265a8aa2-11e8-4465-9e2a-ad8b09925959")
 
 		} else if event.GroupId == 727429388 {
-			err = bot.UploadGroupFile(event.GroupId, "./fiction/"+fileName, fileName, "/d06f2cc2-981c-4249-ab83-dde7e340670a")
-
+			err = bot.UploadGroupFile(event.GroupId, path+"/fiction/"+fileName, fileName, "/d06f2cc2-981c-4249-ab83-dde7e340670a")
+		} else {
+			err = bot.UploadGroupFile(event.GroupId, path+"/fiction/"+fileName, fileName, "")
 		}
 		time.Sleep(time.Duration(120) * time.Second)
 		delete(File, randNum)
