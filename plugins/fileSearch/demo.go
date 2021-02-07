@@ -216,6 +216,7 @@ func Download(event go_mybots.Event, fileName, randNum string, url string, isZip
 	}()
 	client := http.Client{}
 	path, _ := os.Getwd()
+	log.Println(path)
 	if isZip {
 		response, err := client.Get(url)
 		if err != nil {
