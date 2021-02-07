@@ -59,20 +59,14 @@ func GetFile(event go_mybots.Event, args []string) {
 			groupId, _ := strconv.Atoi(file.GroupId)
 			url, _ := bot.GetGroupFileUrl(groupId, file.FileId, file.BusId)
 			File[str] = file.FileName
-			go Download(file.FileName, str, url.Url, false, "")
+			go Download(event, file.FileName, str, url.Url, false, "")
 		} else {
 			zipFile := connect.FileSearchById(file.Pid)
 			groupId, _ := strconv.Atoi(zipFile.GroupId)
 			url, _ := bot.GetGroupFileUrl(groupId, zipFile.FileId, zipFile.BusId)
 			File[str] = file.FileName
-			go Download(zipFile.FileName, str, url.Url, true, file.FileName)
+			go Download(event, zipFile.FileName, str, url.Url, true, file.FileName)
 		}
-		log.Println(len(File))
-		for s, s2 := range File {
-			log.Println(s, s2)
-		}
-
-		bot.SendGroupMsg(event.GroupId, args[1]+"文件\n<"+file.FileName+">\n的下载链接为：\n"+"http://47.110.228.1/fiction/"+str+"\n"+go_mybots.MessageAt(event.UserId).Message, false)
 	}
 }
 
@@ -86,15 +80,12 @@ func FileSearch(event go_mybots.Event, args []string) {
 		bot.SendGroupMsg(event.GroupId, "缺少查找参数"+go_mybots.MessageAt(event.UserId).Message, false)
 		return
 	} else {
-		files := connect.FileSearch(event.GroupId)
-		if event.UserId == 3343780376 && event.GroupId == 972264701 {
-			files = connect.FileSearchALL()
-		}
+		files := connect.FileSearchALL()
 		message := ""
 		i := 0
 		for _, file := range files {
 			if strings.Contains(file.FileName, args[1]) {
-				message += (strconv.Itoa(file.Id) + "  ||  " + file.FileName + "\n\n")
+				message += strconv.Itoa(file.Id) + "  ||  " + file.FileName + "\n\n"
 				if i%10 == 9 {
 					bot.SendGroupMsg(event.GroupId, message, false)
 				}
@@ -107,6 +98,9 @@ func FileSearch(event go_mybots.Event, args []string) {
 
 		}
 		if i < 9 {
+			if message == "" {
+				message = "未在群文件查询到结果"
+			}
 			bot.SendGroupMsg(event.GroupId, message, false)
 		}
 	}
@@ -213,7 +207,7 @@ func downloadFile(fileName string, url string) {
 	defer file.Close()
 }
 
-func Download(fileName, randNum string, url string, isZip bool, resultFileName string) {
+func Download(event go_mybots.Event, fileName, randNum string, url string, isZip bool, resultFileName string) {
 	defer func() {
 		err := recover()
 		if err != nil {
@@ -252,6 +246,16 @@ func Download(fileName, randNum string, url string, isZip bool, resultFileName s
 			}
 
 		}
+		if event.GroupId == 17185204 {
+			err = bot.UploadGroupFile(event.GroupId, "./fiction/"+resultFileName, resultFileName, "/265a8aa2-11e8-4465-9e2a-ad8b09925959")
+
+		} else if event.GroupId == 727429388 {
+			err = bot.UploadGroupFile(event.GroupId, "./fiction/"+resultFileName, resultFileName, "/d06f2cc2-981c-4249-ab83-dde7e340670a")
+
+		}
+		if err != nil {
+			panic(err)
+		}
 		err = zipFile.Close()
 		if err != nil {
 			panic(err)
@@ -282,6 +286,13 @@ func Download(fileName, randNum string, url string, isZip bool, resultFileName s
 			panic(err.Error())
 		}
 		file.Close()
+		if event.GroupId == 17185204 {
+			err = bot.UploadGroupFile(event.GroupId, "./fiction/"+fileName, fileName, "/265a8aa2-11e8-4465-9e2a-ad8b09925959")
+
+		} else if event.GroupId == 727429388 {
+			err = bot.UploadGroupFile(event.GroupId, "./fiction/"+fileName, fileName, "/d06f2cc2-981c-4249-ab83-dde7e340670a")
+
+		}
 		time.Sleep(time.Duration(120) * time.Second)
 		delete(File, randNum)
 		err = os.Remove("./fiction/" + fileName)
