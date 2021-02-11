@@ -8,6 +8,7 @@ import (
 	"github.com/3343780376/go-mybots"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"regexp"
@@ -36,6 +37,8 @@ func init() {
 		Command: ".restart", Allies: ".重启"})
 	go_mybots.ViewNotice = append(go_mybots.ViewNotice, go_mybots.ViewOnNoticeApi{OnNotice: UpLoadFile,
 		NoticeType: go_mybots.NoticeTypeApi.GroupUpload, SubType: ""})
+	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand, go_mybots.ViewOnC0CommandApi{CoCommand: NewYear,
+		Command: ".restart", Allies: "新年快乐"})
 }
 
 //打卡
@@ -208,4 +211,15 @@ func downloadFile(fileName string, url string) {
 		panic(err.Error())
 	}
 	defer file.Close()
+}
+
+//除夕快乐
+func NewYear(event go_mybots.Event, args []string) {
+	if (event.GroupId == 727429388 || event.GroupId == 17185204) && time.Now().Month() == 2 && time.Now().Day() == 12 {
+		rand.Seed(time.Now().UnixNano())
+		n := rand.Intn(5)
+		connect := model.DbInit()
+		connect.Update(n, event)
+		bot.SendGroupMsg(event.GroupId, "新年快乐，恭喜你获得随机积分"+strconv.Itoa(n)+"个"+go_mybots.MessageAt(event.UserId).Message, false)
+	}
 }
