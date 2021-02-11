@@ -215,6 +215,7 @@ func downloadFile(fileName string, url string) {
 
 //除夕快乐
 func NewYear(event go_mybots.Event, args []string) {
+	fmt.Println("出发了事件")
 	if (event.GroupId == 727429388 || event.GroupId == 17185204) && time.Now().Month() == 2 && time.Now().Day() == 12 {
 		rand.Seed(time.Now().UnixNano())
 		n := rand.Intn(5)
