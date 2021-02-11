@@ -38,7 +38,7 @@ func init() {
 	go_mybots.ViewNotice = append(go_mybots.ViewNotice, go_mybots.ViewOnNoticeApi{OnNotice: UpLoadFile,
 		NoticeType: go_mybots.NoticeTypeApi.GroupUpload, SubType: ""})
 	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand, go_mybots.ViewOnC0CommandApi{CoCommand: NewYear,
-		Command: ".restart", Allies: "新年快乐"})
+		Command: "new", Allies: "新年快乐"})
 }
 
 //打卡
