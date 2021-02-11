@@ -215,7 +215,7 @@ func downloadFile(fileName string, url string) {
 
 //除夕快乐
 func NewYear(event go_mybots.Event, args []string) {
-	if event.UserId == 3343780376 {
+	if event.SelfId == 3343780376 {
 		return
 	}
 	fmt.Println(time.Now().Month())
