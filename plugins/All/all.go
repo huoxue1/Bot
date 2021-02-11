@@ -221,5 +221,11 @@ func NewYear(event go_mybots.Event, args []string) {
 		connect := model.DbInit()
 		connect.Update(n, event)
 		bot.SendGroupMsg(event.GroupId, "新年快乐，恭喜你获得随机积分"+strconv.Itoa(n)+"个"+go_mybots.MessageAt(event.UserId).Message, false)
+	} else if event.GroupId == 972264701 {
+		rand.Seed(time.Now().UnixNano())
+		n := rand.Intn(5)
+		connect := model.DbInit()
+		connect.Update(n, event)
+		bot.SendGroupMsg(event.GroupId, "新年快乐，恭喜你获得随机积分"+strconv.Itoa(n)+"个"+go_mybots.MessageAt(event.UserId).Message, false)
 	}
 }
