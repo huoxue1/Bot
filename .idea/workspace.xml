@@ -19,7 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="670338bf-b134-41fb-9956-da5c6d8da7f7" name="默认更改列表" comment="commit" />
+    <list default="true" id="670338bf-b134-41fb-9956-da5c6d8da7f7" name="默认更改列表" comment="commit">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -149,7 +152,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit" />
+    <MESSAGE value="修改忘记关闭数据库对象的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改忘记关闭数据库对象的bug" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
