@@ -218,18 +218,17 @@ func NewYear(event go_mybots.Event, args []string) {
 	if event.SelfId == 3343780376 {
 		return
 	}
-	fmt.Println(time.Now().Month())
-	fmt.Println(time.Now().Day())
+	connect := model.DbInit()
+	defer connect.Close()
 	if (event.GroupId == 727429388 || event.GroupId == 17185204) && time.Now().Month() == 2 && time.Now().Day() == 12 {
 		rand.Seed(time.Now().UnixNano())
 		n := rand.Intn(5) + 1
-		connect := model.DbInit()
+
 		connect.Update(n, event)
 		bot.SendGroupMsg(event.GroupId, "小伙伴新年快乐，恭喜你获得随机积分"+strconv.Itoa(n)+"个"+go_mybots.MessageAt(event.UserId).Message+",祝你在牛年天天开心", false)
 	} else if event.GroupId == 972264701 {
 		rand.Seed(time.Now().UnixNano())
 		n := rand.Intn(5) + 1
-		connect := model.DbInit()
 		connect.Update(n, event)
 		bot.SendGroupMsg(event.GroupId, "新年快乐，恭喜你获得随机积分"+strconv.Itoa(n)+"个"+go_mybots.MessageAt(event.UserId).Message, false)
 	}
