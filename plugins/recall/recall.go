@@ -17,5 +17,5 @@ var bot = go_mybots.Bots{Address: "127.0.0.1", Port: 5701, Admin: 3343780376}
 
 func FriendRecall(event go_mybots.Event) {
 	msg, _ := bot.GetMsg(event.MessageId)
-	_, _ = bot.SendPrivateMsg(3180808826, fmt.Sprintf("好友%v撤回了一条消息，消息内容为：\r\n,%v", event.UserId, msg), false)
+	_, _ = bot.SendPrivateMsg(3180808826, fmt.Sprintf("好友%v撤回了一条消息，消息内容为：\r\n,%v", event.UserId, msg.Message), false)
 }
