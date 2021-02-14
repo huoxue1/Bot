@@ -7,6 +7,7 @@ import (
 	"Bot/plugins/daka"
 	"Bot/plugins/fileSearch"
 	_ "Bot/plugins/flash"
+	_ "Bot/plugins/recall"
 	_ "Bot/plugins/refresh"
 	"fmt"
 	Bot "github.com/3343780376/go-mybots"
