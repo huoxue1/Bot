@@ -139,6 +139,7 @@ func UpLoadFile(event go_mybots.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
+	message := "\n内容为："
 	connect := model.DbInit()
 	defer connect.Close()
 	connect.Update(5, event)
@@ -153,6 +154,7 @@ func UpLoadFile(event go_mybots.Event) {
 		}
 
 		for _, f2 := range zipReader.File {
+			message += f2.Name + "\n"
 			connect.FileInsert(model.File{
 				Id:       0,
 				FileName: f2.Name,
@@ -179,7 +181,7 @@ func UpLoadFile(event go_mybots.Event) {
 		GroupId:  strconv.Itoa(event.GroupId),
 		Pid:      0,
 	})
-	bot.SendGroupMsg(event.GroupId, "文件上传成功，积分加5"+go_mybots.MessageAt(event.UserId).Message, false)
+	bot.SendGroupMsg(event.GroupId, "文件上传成功，积分加5。"+message+go_mybots.MessageAt(event.UserId).Message, false)
 }
 
 func Help(event go_mybots.Event, args []string) {
