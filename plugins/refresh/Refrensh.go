@@ -1,9 +1,8 @@
 package refresh
 
 import (
-	"Bot/Integral"
+	"Bot/model"
 	"github.com/3343780376/go-bot"
-	"log"
 )
 
 func init() {
@@ -34,16 +33,13 @@ func Refresh(event go_bot.Event) {
 	} else {
 		Num = 0
 	}
+	connect := model.DbInit()
+	defer connect.Close()
 	UserId = event.UserId
 	if Num >= 4 {
-		xlsx := Integral.Xlsx{Event: event, Sheet: ""}
-		err := xlsx.XlsxInit()
-		_, err = xlsx.Decrease(2)
+		connect.Update(-2, event)
 		bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
-		_ = bot.SendGroupMsg(event.GroupId, "你刷屏了"+bot.MessageAt(event.UserId).Message, false)
-		if err != nil {
-			log.Println(err)
-		}
+		bot.SendGroupMsg(event.GroupId, "你刷屏了"+bot.MessageAt(event.UserId).Message, false)
 		Num = 0
 	}
 }

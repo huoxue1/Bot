@@ -1,7 +1,7 @@
 package Hello
 
 import (
-	"Bot/Integral"
+	"Bot/model"
 	"fmt"
 	"github.com/3343780376/go-bot"
 	"log"
@@ -102,41 +102,27 @@ func SignIn(event go_bot.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
-	//defer func() {
-	//	err := recover()
-	//	if err != nil {
-	//		log.Println(err)
-	//	}
-	//}()
-	if event.Message == "签到" {
-		xlsx := Integral.Xlsx{Event: event, Sheet: "Sheet1"}
-		err := xlsx.XlsxInit()
-		sign, err := xlsx.IsSign()
+	defer func() {
+		err := recover()
 		if err != nil {
-			log.Panic(err)
+			log.Println(err)
 		}
-		if sign {
-			num, err := xlsx.SearchNum()
-			if err != nil {
-				log.Panic(err)
-			}
+	}()
+	connect := model.DbInit()
+	defer connect.Close()
+	if event.Message == "签到" {
+		sign := connect.IsSign(event)
+		if !sign {
+			num := connect.SelctSign(event)
 			bot.SendGroupMsg(event.GroupId,
 				fmt.Sprintf("签到成功,积分增加2;\n当前共有积分%v\n[CQ:at,qq=%v]", num, event.UserId), false)
 		} else {
-			num, err := xlsx.SearchNum()
-			if err != nil {
-				log.Panic(err)
-			}
+			num := connect.SelctSign(event)
 			bot.SendGroupMsg(event.GroupId,
 				fmt.Sprintf("今日已签到，请明日再来;当前共有积分%v\n[CQ:at,qq=%v]", num, event.UserId), false)
 		}
 	} else if event.Message == "积分查询" {
-		x := Integral.Xlsx{Event: event, Sheet: "Sheet1"}
-		err := x.XlsxInit()
-		if err != nil {
-			log.Panic(err)
-		}
-		num, err := x.SearchNum()
+		num := connect.SelctSign(event)
 		bot.SendGroupMsg(event.GroupId, fmt.Sprintf("你当前的积分为%d\n[CQ:at,qq=%d]", num, event.UserId), false)
 
 	}
