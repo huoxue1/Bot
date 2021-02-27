@@ -4,7 +4,6 @@ import (
 	_ "Bot/plugins/All"
 	_ "Bot/plugins/Hello"
 	_ "Bot/plugins/Robbery"
-	"Bot/plugins/daka"
 	"Bot/plugins/fileSearch"
 	_ "Bot/plugins/flash"
 	_ "Bot/plugins/refresh"
@@ -19,7 +18,7 @@ import (
 )
 
 func main() {
-	go daka.Cr()
+	//go daka.Cr()
 	go_bot.LoadFilter("./config.json")
 	go handHttp()
 	go_bot.Run("127.0.0.1:8000")
