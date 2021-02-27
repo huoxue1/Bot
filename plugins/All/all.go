@@ -8,7 +8,6 @@ import (
 	"github.com/3343780376/go-mybots"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"regexp"
@@ -37,8 +36,6 @@ func init() {
 		Command: ".restart", Allies: ".重启"})
 	go_mybots.ViewNotice = append(go_mybots.ViewNotice, go_mybots.ViewOnNoticeApi{OnNotice: UpLoadFile,
 		NoticeType: go_mybots.NoticeTypeApi.GroupUpload, SubType: ""})
-	go_mybots.ViewOnCoCommand = append(go_mybots.ViewOnCoCommand, go_mybots.ViewOnC0CommandApi{CoCommand: NewYear,
-		Command: "new", Allies: "新年快乐"})
 }
 
 //打卡
@@ -132,10 +129,6 @@ func BanSomeBody(event go_mybots.Event, args []string) {
 
 //上传文件事件
 func UpLoadFile(event go_mybots.Event) {
-	defer func() {
-		err := recover()
-		log.Println(err)
-	}()
 	if event.SelfId == 3343780376 {
 		return
 	}
@@ -146,28 +139,7 @@ func UpLoadFile(event go_mybots.Event) {
 	isZip := true
 	if strings.Contains(event.File.Name, ".zip") {
 		isZip = true
-		url, _ := bot.GetGroupFileUrl(event.GroupId, event.File.Id, int(event.File.Busid))
-		downloadFile(event.File.Name, url.Url)
-		zipReader, err := zip.OpenReader("./fiction/zip/" + event.File.Name)
-		if err != nil {
-			panic(err.Error())
-		}
 
-		for _, f2 := range zipReader.File {
-			message += f2.Name + "\n"
-			connect.FileInsert(model.File{
-				Id:       0,
-				FileName: f2.Name,
-				FileId:   "",
-				BusId:    0,
-				IsChild:  true,
-				IsZip:    false,
-				GroupId:  strconv.Itoa(event.GroupId),
-				Pid:      connect.FileSearchId(event.File.Id).Id,
-			})
-		}
-		_ = zipReader.Close()
-		_ = os.Remove("./fiction/zip/" + event.File.Name)
 	} else {
 		isZip = false
 	}
@@ -181,6 +153,31 @@ func UpLoadFile(event go_mybots.Event) {
 		GroupId:  strconv.Itoa(event.GroupId),
 		Pid:      0,
 	})
+	if isZip {
+		url, _ := bot.GetGroupFileUrl(event.GroupId, event.File.Id, int(event.File.Busid))
+		downloadFile(event.File.Name, url.Url)
+		zipReader, err := zip.OpenReader("./fiction/zip/" + event.File.Name)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		for _, f2 := range zipReader.File {
+			message += f2.Name + "\n"
+			data := connect.FileInsert(model.File{
+				FileName: f2.Name,
+				FileId:   "",
+				BusId:    0,
+				IsChild:  true,
+				IsZip:    false,
+				GroupId:  strconv.Itoa(event.GroupId),
+				Pid:      connect.FileSearchId(event.File.Id).Id,
+			})
+			fmt.Println(data)
+		}
+		_ = zipReader.Close()
+		_ = os.Remove("./fiction/zip/" + event.File.Name)
+	}
+
 	bot.SendGroupMsg(event.GroupId, "文件上传成功，积分加5。"+message+go_mybots.MessageAt(event.UserId).Message, false)
 }
 
@@ -213,25 +210,4 @@ func downloadFile(fileName string, url string) {
 		panic(err.Error())
 	}
 	defer file.Close()
-}
-
-//除夕快乐
-func NewYear(event go_mybots.Event, args []string) {
-	if event.SelfId == 3343780376 {
-		return
-	}
-	connect := model.DbInit()
-	defer connect.Close()
-	if (event.GroupId == 727429388 || event.GroupId == 17185204) && time.Now().Month() == 2 && time.Now().Day() == 12 {
-		rand.Seed(time.Now().UnixNano())
-		n := rand.Intn(5) + 1
-
-		connect.Update(n, event)
-		bot.SendGroupMsg(event.GroupId, "小伙伴新年快乐，恭喜你获得随机积分"+strconv.Itoa(n)+"个"+go_mybots.MessageAt(event.UserId).Message+",祝你在牛年天天开心", false)
-	} else if event.GroupId == 972264701 {
-		rand.Seed(time.Now().UnixNano())
-		n := rand.Intn(5) + 1
-		connect.Update(n, event)
-		bot.SendGroupMsg(event.GroupId, "新年快乐，恭喜你获得随机积分"+strconv.Itoa(n)+"个"+go_mybots.MessageAt(event.UserId).Message, false)
-	}
 }

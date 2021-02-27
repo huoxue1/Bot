@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"strconv"
 )
 
@@ -16,20 +17,21 @@ type File struct {
 }
 
 func (con *Connect) FileInsert(file File) bool {
-	se := con.FileSearchId(file.FileId)
-	if se.Id != 0 {
-		_, _ = con.Db.Exec("update file set fileName=?,file.fileId=?,file.busid = ?, file.isChild = ?,file.isZip = ?,file.groupId=?,file.pid=? where Id = ?",
-			file.FileName, file.FileId, file.BusId, file.IsChild, file.IsZip, file.GroupId, file.Pid, se.Id)
-	} else {
+	//se := con.FileSearchId(file.FileId)
+	//if se.Id != 0 {
+	//	_, _ = con.Db.Exec("update file set fileName=?,file.fileId=?,file.busid = ?, file.isChild = ?,file.isZip = ?,file.groupId=?,file.pid=? where Id = ?",
+	//		file.FileName, file.FileId, file.BusId, file.IsChild, file.IsZip, file.GroupId, file.Pid, se.Id)
+	//} else {
 
-		_, err := con.Db.Exec("insert into file (filename, fileid, busid, ischild, iszip, groupid, pid) VALUES (?,?,?,?,?,?,?)",
-			file.FileName, file.FileId, file.BusId, file.IsChild, file.IsZip, file.GroupId, file.Pid)
-		if err != nil {
-			return false
-		}
-		return true
+	_, err := con.Db.Exec("insert into file (filename, fileid, busid, ischild, iszip, groupid, pid) VALUES (?,?,?,?,?,?,?)",
+		file.FileName, file.FileId, file.BusId, file.IsChild, file.IsZip, file.GroupId, file.Pid)
+	if err != nil {
+		fmt.Println(err.Error())
+		return false
 	}
 	return true
+	//}
+	//return true
 }
 
 func (con *Connect) FileSearch(groupId int) []File {
