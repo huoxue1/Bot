@@ -1,7 +1,9 @@
 package curse
 
 import (
+	"fmt"
 	go_mybots "github.com/3343780376/go-mybots"
+	"os"
 	"strconv"
 	"time"
 )
@@ -16,10 +18,12 @@ func init() {
 }
 
 func Curse(event go_mybots.Event, args []string) {
+	path, _ := os.Getwd()
+
 	if event.GroupId == 681168003 || event.UserId == 3343780376 {
 		if len(args) <= 1 {
 			if event.GroupId != 0 {
-				bot.SendPrivateMsg(event.UserId, "[CQ:image,file=file:\\]", false)
+				_, _ = bot.SendPrivateMsg(event.UserId, fmt.Sprintf("[CQ:image,file=file:///%v]", path+"/templete/image/week"+strconv.Itoa(getWeek())+".jpg"), false)
 			}
 		}
 	}

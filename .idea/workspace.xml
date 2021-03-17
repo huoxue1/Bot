@@ -20,28 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="670338bf-b134-41fb-9956-da5c6d8da7f7" name="默认更改列表" comment="commit">
-      <change afterPath="$PROJECT_DIR$/plugins/curse/curse.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week10.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week11.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week12.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week13.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week14.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week15.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week16.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week17.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week4.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week5.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week6.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week7.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week8.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templete/image/week9.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/daka/demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/daka/demo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/curse/curse.go" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/curse/curse.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +87,7 @@
       <recent name="E:\projects\GO\Bot\plugins\daka" />
     </key>
   </component>
-  <component name="RunManager" selected="Go 构建.go build main.go">
+  <component name="RunManager" selected="Go 构建.go build temp.go (1)">
     <configuration name="go build Bot" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="Bot" />
       <working_directory value="$PROJECT_DIR$" />
@@ -135,6 +115,15 @@
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="go build temp.go (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="Bot" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/tmp/temp.go" />
+      <package value="Bot" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build temp.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="Bot" />
       <working_directory value="$PROJECT_DIR$" />
@@ -146,6 +135,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go 构建.go build temp.go (1)" />
         <item itemvalue="Go 构建.go build main.go" />
         <item itemvalue="Go 构建.go build temp.go" />
       </list>
