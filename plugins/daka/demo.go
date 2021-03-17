@@ -32,31 +32,34 @@ var bot1 = go_mybots.Bots{Address: "127.0.0.1", Port: 5701, Admin: 3343780376}
 
 func Cr() {
 	c := cron.New()
-	spec := "0 1 1 * * ?"
+	spec := "0 8,9,10 1 * * ?"
+	//err := c.AddFunc(spec, func() {
+	//	//IS := false
+	//	//if !Do() {
+	//	//	if Do() {
+	//	//		IS = true
+	//	//	}
+	//	//} else {
+	//	//	IS = true
+	//	//}
+	//	//if IS {
+	//	//	_, _ = bot.SendPrivateMsg(3343780376, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
+	//	//} else {
+	//	//	_, _ = bot.SendPrivateMsg(3343780376, "打卡失败", false)
+	//	//}
+	//	num := 5
+	//	for num != 0 {
+	//		if Do() {
+	//			_, _ = bot.SendPrivateMsg(3343780376, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
+	//			break
+	//		} else {
+	//			_, _ = bot.SendPrivateMsg(3343780376, fmt.Sprintf("打卡失败,第%v次打卡", 6-num), false)
+	//		}
+	//		num = num - 1
+	//	}
+	//})
 	err := c.AddFunc(spec, func() {
-		//IS := false
-		//if !Do() {
-		//	if Do() {
-		//		IS = true
-		//	}
-		//} else {
-		//	IS = true
-		//}
-		//if IS {
-		//	_, _ = bot.SendPrivateMsg(3343780376, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
-		//} else {
-		//	_, _ = bot.SendPrivateMsg(3343780376, "打卡失败", false)
-		//}
-		num := 5
-		for num != 0 {
-			if Do() {
-				_, _ = bot.SendPrivateMsg(3343780376, "打卡成功\nhttp://47.110.228.1/log/"+time.Now().Format("2006-01-02")+".log", false)
-				break
-			} else {
-				_, _ = bot.SendPrivateMsg(3343780376, fmt.Sprintf("打卡失败,第%v次打卡", 6-num), false)
-			}
-			num = num - 1
-		}
+		_, _ = bot.SendPrivateMsg(3343780376, "请及时打卡", false)
 	})
 	if err != nil {
 		log.Println(err)

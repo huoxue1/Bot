@@ -4,7 +4,6 @@ import (
 	_ "Bot/plugins/All"
 	_ "Bot/plugins/Hello"
 	_ "Bot/plugins/Robbery"
-	"Bot/plugins/daka"
 	"Bot/plugins/fileSearch"
 	_ "Bot/plugins/flash"
 	_ "Bot/plugins/recall"
@@ -23,7 +22,6 @@ func main() {
 
 	hand := Bot.Hand()
 	handHttp(hand)
-	go daka.Cr()
 	Bot.LoadFilter("./config.json")
 	err := hand.Run("0.0.0.0:80")
 	if err != nil {
