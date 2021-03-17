@@ -4,6 +4,7 @@ import (
 	_ "Bot/plugins/All"
 	_ "Bot/plugins/Hello"
 	_ "Bot/plugins/Robbery"
+	"Bot/plugins/daka"
 	"Bot/plugins/fileSearch"
 	_ "Bot/plugins/flash"
 	_ "Bot/plugins/recall"
@@ -27,6 +28,7 @@ func main() {
 	if err != nil {
 		log.Println("端口错误")
 	}
+	go daka.Cr()
 	log.Println("正在监听")
 }
 
