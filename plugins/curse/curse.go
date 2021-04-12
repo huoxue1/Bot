@@ -23,7 +23,7 @@ func Curse(event go_mybots.Event, args []string) {
 	if event.GroupId == 681168003 || event.UserId == 3343780376 {
 		if len(args) <= 1 {
 			if event.GroupId != 0 {
-				_, _ = bot.SendPrivateMsg(event.UserId, fmt.Sprintf("[CQ:image,file=file:///%v]", path+"/templete/image/week"+strconv.Itoa(getWeek())+".jpg"), false)
+				_, _ = bot.SendMsg(event.MessageType, event.UserId, fmt.Sprintf("[CQ:image,file=file:///%v]", path+"/templete/image/week"+strconv.Itoa(getWeek())+".jpg"), false)
 			}
 		}
 	}
