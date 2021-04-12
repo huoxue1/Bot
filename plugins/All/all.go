@@ -1,11 +1,15 @@
 package All
 
 import (
-	"Bot/model"
+	"Bot/models"
 	"Bot/plugins/daka"
 	"archive/zip"
+	"bytes"
 	"fmt"
 	"github.com/3343780376/go-mybots"
+	"github.com/axgle/mahonia"
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -59,8 +63,6 @@ func BanSpecialWord(event go_mybots.Event) {
 	if event.SelfId == 3343780376 {
 		return
 	}
-	connect := model.DbInit()
-	defer connect.Close()
 	for _, word := range words {
 		if strings.Contains(event.Message, word) {
 			_ = bot.DeleteMsg(event.MessageId)
@@ -68,7 +70,7 @@ func BanSpecialWord(event go_mybots.Event) {
 				"该消息已经违规，请注意言行\n积分减少2"+go_mybots.MessageAt(event.UserId).Message, false)
 			_ = bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
 
-			connect.Update(-2, event)
+			models.Update(-2, event)
 		}
 	}
 }
@@ -133,48 +135,58 @@ func UpLoadFile(event go_mybots.Event) {
 		return
 	}
 	message := "\n内容为："
-	connect := model.DbInit()
-	defer connect.Close()
-	connect.Update(5, event)
-	isZip := true
+	models.Update(5, event)
+	isZip := 1
 	if strings.Contains(event.File.Name, ".zip") {
-		isZip = true
+		isZip = 1
 
 	} else {
-		isZip = false
+		isZip = 0
 	}
-	connect.FileInsert(model.File{
-		Id:       0,
-		FileName: event.File.Name,
-		FileId:   event.File.Id,
-		BusId:    int(event.File.Busid),
-		IsChild:  false,
-		IsZip:    isZip,
-		GroupId:  strconv.Itoa(event.GroupId),
+	_ = models.FileInsert(&models.File{
+		Filename: event.File.Name,
+		Fileid:   event.File.Id,
+		Busid:    int(event.File.Busid),
+		Ischild:  0,
+		Iszip:    isZip,
+		Groupid:  strconv.Itoa(event.GroupId),
 		Pid:      0,
 	})
-	if isZip {
+
+	if isZip == 1 {
 		url, _ := bot.GetGroupFileUrl(event.GroupId, event.File.Id, int(event.File.Busid))
 		downloadFile(event.File.Name, url.Url)
-		zipReader, err := zip.OpenReader("./fiction/zip/" + event.File.Name)
-		if err != nil {
-			panic(err.Error())
-		}
-
-		for _, f2 := range zipReader.File {
-			message += f2.Name + "\n"
-			data := connect.FileInsert(model.File{
-				FileName: f2.Name,
-				FileId:   "",
-				BusId:    0,
-				IsChild:  true,
-				IsZip:    false,
-				GroupId:  strconv.Itoa(event.GroupId),
-				Pid:      connect.FileSearchId(event.File.Id).Id,
+		//zipReader, err := zip.OpenReader("./fiction/zip/" + event.File.Name)
+		//if err != nil {
+		//	panic(err.Error())
+		//}
+		datas := Unzip("./fiction/zip/"+event.File.Name, "")
+		for _, data := range datas {
+			message += string(GbkToUtf8([]byte(data))) + "\n"
+			models.FileInsert(&models.File{
+				Filename: string(GbkToUtf8([]byte(data))),
+				Fileid:   "",
+				Busid:    0,
+				Ischild:  1,
+				Iszip:    0,
+				Groupid:  strconv.Itoa(event.GroupId),
+				Pid:      models.FileSearchId(event.File.Id).Id,
 			})
-			fmt.Println(data)
 		}
-		_ = zipReader.Close()
+		//for _, f2 := range zipReader.File {
+		//	message += f2.Name + "\n"
+		//	insert, _ := models.FileInsert(&models.File{
+		//		Filename: f2.Name,
+		//		Fileid:   "",
+		//		Busid:    0,
+		//		Ischild:  1,
+		//		Iszip:    0,
+		//		Groupid:  strconv.Itoa(event.GroupId),
+		//		Pid:      models.FileSearchId(event.File.Id).Id,
+		//	})
+		//	fmt.Println(insert)
+		//}
+		//_ = zipReader.Close()
 		_ = os.Remove("./fiction/zip/" + event.File.Name)
 	}
 
@@ -210,4 +222,74 @@ func downloadFile(fileName string, url string) {
 		panic(err.Error())
 	}
 	defer file.Close()
+}
+
+func Unzip(zipFile string, destDir string) []string {
+	zipReader, err := zip.OpenReader(zipFile)
+	if err != nil {
+		return nil
+	}
+	var data []string
+	defer zipReader.Close()
+	var decodeName string
+	for _, f := range zipReader.File {
+		if f.Flags == 0 {
+			//如果标致位是0  则是默认的本地编码   默认为gbk
+			i := bytes.NewReader([]byte(f.Name))
+			decoder := transform.NewReader(i, simplifiedchinese.GB18030.NewDecoder())
+			content, _ := ioutil.ReadAll(decoder)
+			decodeName = string(content)
+		} else {
+			//如果标志为是 1 << 11也就是 2048  则是utf-8编码
+			decodeName = f.Name
+		}
+		data = append(data, decodeName)
+		//fpath := filepath.Join(destDir, decodeName)
+		//if f.FileInfo().IsDir() {
+		//	os.MkdirAll(fpath, os.ModePerm)
+		//	return data
+		//} else {
+		//	if err = os.MkdirAll(filepath.Dir(fpath), os.ModePerm); err != nil {
+		//		return nil
+		//	}
+		//
+		//	inFile, err := f.Open()
+		//	if err != nil {
+		//		return nil
+		//	}
+		//	defer inFile.Close()
+		//
+		//	outFile, err := os.OpenFile(fpath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+		//	if err != nil {
+		//		return nil
+		//	}
+		//	defer outFile.Close()
+		//
+		//	_, err = io.Copy(outFile, inFile)
+		//	if err != nil {
+		//		return nil
+		//	}
+		//	return data
+		//}
+		return data
+	}
+	return data
+}
+
+func ConvertToString(src string, srcCode string, tagCode string) string {
+	srcCoder := mahonia.NewDecoder(srcCode)
+	srcResult := srcCoder.ConvertString(src)
+	tagCoder := mahonia.NewDecoder(tagCode)
+	_, cdata, _ := tagCoder.Translate([]byte(srcResult), true)
+	result := string(cdata)
+	return result
+}
+
+func GbkToUtf8(s []byte) []byte {
+	reader := transform.NewReader(bytes.NewReader(s), simplifiedchinese.GBK.NewDecoder())
+	d, e := ioutil.ReadAll(reader)
+	if e != nil {
+		return nil
+	}
+	return d
 }

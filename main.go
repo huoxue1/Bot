@@ -1,9 +1,11 @@
 package main
 
 import (
+	"Bot/models"
 	_ "Bot/plugins/All"
 	_ "Bot/plugins/Hello"
 	_ "Bot/plugins/Robbery"
+	_ "Bot/plugins/curse"
 	"Bot/plugins/daka"
 	"Bot/plugins/fileSearch"
 	_ "Bot/plugins/flash"
@@ -20,7 +22,7 @@ import (
 )
 
 func main() {
-
+	go models.Xorminit()
 	hand := Bot.Hand()
 	handHttp(hand)
 	Bot.LoadFilter("./config.json")
@@ -44,7 +46,6 @@ func handHttp(engine *gin.Engine) {
 			if err != nil {
 				log.Println("命令执行失败")
 			}
-
 		}
 	})
 

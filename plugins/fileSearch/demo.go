@@ -1,7 +1,7 @@
 package fileSearch
 
 import (
-	"Bot/model"
+	"Bot/models"
 	"archive/zip"
 	"github.com/3343780376/go-mybots"
 	"io"
@@ -40,8 +40,7 @@ func GetFile(event go_mybots.Event, args []string) {
 	if event.SelfId == 3343780376 {
 
 	}
-	connect := model.DbInit()
-	defer connect.Close()
+
 	if len(args) <= 1 {
 		bot.SendGroupMsg(event.GroupId, "缺少查找参数"+go_mybots.MessageAt(event.UserId).Message, false)
 		return
@@ -54,18 +53,18 @@ func GetFile(event go_mybots.Event, args []string) {
 
 		rand.Seed(time.Now().Unix())
 		str := strconv.FormatInt(time.Now().Unix(), 10) + strconv.FormatInt(rand.Int63n(10000), 10)
-		file := connect.FileSearchById(Id)
-		if !file.IsChild {
-			groupId, _ := strconv.Atoi(file.GroupId)
-			url, _ := bot.GetGroupFileUrl(groupId, file.FileId, file.BusId)
-			File[str] = file.FileName
-			go Download(event, file.FileName, str, url.Url, false, "")
+		file := models.FileSearchById(Id)
+		if file.Ischild == 0 {
+			groupId, _ := strconv.Atoi(file.Groupid)
+			url, _ := bot.GetGroupFileUrl(groupId, file.Fileid, file.Busid)
+			File[str] = file.Filename
+			go Download(event, file.Filename, str, url.Url, false, "")
 		} else {
-			zipFile := connect.FileSearchById(file.Pid)
-			groupId, _ := strconv.Atoi(zipFile.GroupId)
-			url, _ := bot.GetGroupFileUrl(groupId, zipFile.FileId, zipFile.BusId)
-			File[str] = file.FileName
-			go Download(event, zipFile.FileName, str, url.Url, true, file.FileName)
+			zipFile := models.FileSearchById(file.Pid)
+			groupId, _ := strconv.Atoi(zipFile.Groupid)
+			url, _ := bot.GetGroupFileUrl(groupId, zipFile.Fileid, zipFile.Busid)
+			File[str] = file.Filename
+			go Download(event, zipFile.Filename, str, url.Url, true, file.Filename)
 		}
 	}
 }
@@ -74,18 +73,16 @@ func FileSearch(event go_mybots.Event, args []string) {
 	if event.SelfId == 3343780376 {
 		return
 	}
-	connect := model.DbInit()
-	defer connect.Close()
 	if len(args) <= 1 {
 		bot.SendGroupMsg(event.GroupId, "缺少查找参数"+go_mybots.MessageAt(event.UserId).Message, false)
 		return
 	} else {
-		files := connect.FileSearchALL()
+		files := models.FileSearchALL()
 		message := ""
 		i := 0
 		for _, file := range files {
-			if strings.Contains(file.FileName, args[1]) {
-				message += strconv.Itoa(file.Id) + "  ||  " + file.FileName + "\n\n"
+			if strings.Contains(file.Filename, args[1]) {
+				message += strconv.Itoa(file.Id) + "  ||  " + file.Filename + "\n\n"
 				if i%10 == 9 {
 					bot.SendGroupMsg(event.GroupId, message, false)
 				}
@@ -133,30 +130,27 @@ func FileInit(event go_mybots.Event, args []string) {
 			file = append(file, search{i.FileName, i.FileId, i.Busid})
 		}
 	}
-	connect := model.DbInit()
-	defer connect.Close()
+
 	for i, f := range file {
 		if !strings.HasSuffix(f.FileName, ".zip") {
-			connect.FileInsert(model.File{
-				Id:       0,
-				FileName: f.FileName,
-				FileId:   f.FileId,
-				BusId:    f.Busid,
-				IsChild:  false,
-				IsZip:    false,
-				GroupId:  strconv.Itoa(event.GroupId),
+			models.FileInsert(&models.File{
+				Filename: f.FileName,
+				Fileid:   f.FileId,
+				Busid:    f.Busid,
+				Ischild:  0,
+				Iszip:    0,
+				Groupid:  strconv.Itoa(event.GroupId),
 				Pid:      0,
 			})
 			file = append(file[:i], file[i+1:]...)
 		} else {
-			connect.FileInsert(model.File{
-				Id:       0,
-				FileName: f.FileName,
-				FileId:   f.FileId,
-				BusId:    f.Busid,
-				IsChild:  false,
-				IsZip:    true,
-				GroupId:  strconv.Itoa(event.GroupId),
+			models.FileInsert(&models.File{
+				Filename: f.FileName,
+				Fileid:   f.FileId,
+				Busid:    f.Busid,
+				Ischild:  0,
+				Iszip:    1,
+				Groupid:  strconv.Itoa(event.GroupId),
 				Pid:      0,
 			})
 			url, _ := bot.GetGroupFileUrl(event.GroupId, f.FileId, f.Busid)
@@ -167,15 +161,15 @@ func FileInit(event go_mybots.Event, args []string) {
 			}
 
 			for _, f2 := range zipReader.File {
-				connect.FileInsert(model.File{
+				models.FileInsert(&models.File{
 					Id:       0,
-					FileName: f2.Name,
-					FileId:   "",
-					BusId:    0,
-					IsChild:  true,
-					IsZip:    false,
-					GroupId:  strconv.Itoa(event.GroupId),
-					Pid:      connect.FileSearchId(f.FileId).Id,
+					Filename: f2.Name,
+					Fileid:   "",
+					Busid:    0,
+					Ischild:  1,
+					Iszip:    0,
+					Groupid:  strconv.Itoa(event.GroupId),
+					Pid:      models.FileSearchId(f.FileId).Id,
 				})
 			}
 			_ = zipReader.Close()

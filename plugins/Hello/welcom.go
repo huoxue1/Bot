@@ -1,7 +1,7 @@
 package Hello
 
 import (
-	"Bot/model"
+	"Bot/models"
 	"fmt"
 	"github.com/3343780376/go-mybots"
 	"log"
@@ -104,21 +104,19 @@ func SignIn(event go_mybots.Event) {
 			log.Println(err)
 		}
 	}()
-	connect := model.DbInit()
-	defer connect.Close()
 	if event.Message == "签到" {
-		sign := connect.IsSign(event)
+		sign := models.IsSign(event)
 		if !sign {
-			num := connect.SelctSign(event)
+			num := models.SelectSign(event)
 			bot.SendGroupMsg(event.GroupId,
 				fmt.Sprintf("签到成功,积分增加2;\n当前共有积分%v\n[CQ:at,qq=%v]", num, event.UserId), false)
 		} else {
-			num := connect.SelctSign(event)
+			num := models.SelectSign(event)
 			bot.SendGroupMsg(event.GroupId,
 				fmt.Sprintf("今日已签到，请明日再来;当前共有积分%v\n[CQ:at,qq=%v]", num, event.UserId), false)
 		}
 	} else if event.Message == "积分查询" {
-		num := connect.SelctSign(event)
+		num := models.SelectSign(event)
 		bot.SendGroupMsg(event.GroupId, fmt.Sprintf("你当前的积分为%d\n[CQ:at,qq=%d]", num, event.UserId), false)
 
 	}

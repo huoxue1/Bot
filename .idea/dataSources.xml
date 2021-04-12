@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mysql://localhost:3306/groupdb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="groupdb@rm-bp16ar289akg5k41hjo.mysql.rds.aliyuncs.com" uuid="c686947b-8415-4eb5-ab1c-26ef886dbbfe">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://rm-bp16ar289akg5k41hjo.mysql.rds.aliyuncs.com:3306/groupdb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

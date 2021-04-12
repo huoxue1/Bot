@@ -1,7 +1,7 @@
 package refresh
 
 import (
-	"Bot/model"
+	"Bot/models"
 	"github.com/3343780376/go-mybots"
 	"log"
 )
@@ -30,9 +30,7 @@ func Refresh(event go_mybots.Event) {
 	}
 	UserId = event.UserId
 	if Num >= 4 {
-		connect := model.DbInit()
-		defer connect.Close()
-		connect.Update(-1, event)
+		models.Update(-1, event)
 		err := bot.SetGroupBan(event.GroupId, event.UserId, 10*60)
 		_, err = bot.SendGroupMsg(event.GroupId, "你刷屏了"+go_mybots.MessageAt(event.UserId).Message, false)
 		if err != nil {
