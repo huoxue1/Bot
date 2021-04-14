@@ -42,10 +42,14 @@ func GetFile(event go_mybots.Event, args []string) {
 	}
 
 	if len(args) <= 1 {
+
 		bot.SendGroupMsg(event.GroupId, "缺少查找参数"+go_mybots.MessageAt(event.UserId).Message, false)
 		return
 	} else {
 		Id, err := strconv.Atoi(args[1])
+		if Id == 1 && event.UserId != 3343780376 {
+			return
+		}
 		if err != nil {
 			bot.SendGroupMsg(event.GroupId, "缺少查找参数"+go_mybots.MessageAt(event.UserId).Message, false)
 			return
