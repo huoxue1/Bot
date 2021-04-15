@@ -9,6 +9,7 @@ import (
 	"Bot/plugins/daka"
 	"Bot/plugins/fileSearch"
 	_ "Bot/plugins/flash"
+	_ "Bot/plugins/notify"
 	_ "Bot/plugins/recall"
 	_ "Bot/plugins/refresh"
 	"fmt"
