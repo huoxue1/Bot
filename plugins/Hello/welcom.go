@@ -68,7 +68,7 @@ func Welcome(event go_mybots.Event) {
 		if event.Message == "晚安" {
 			bot.SendGroupMsg(event.GroupId,
 				event.Message+m["晚安"]+go_mybots.MessageAt(event.UserId).Message, false)
-			bot.SendGroupMsg(event.GroupId, "[CQ:tts,text=晚安]", false)
+			bot.SendGroupMsg(event.GroupId, "[CQ:tts,text=晚安,祝你好梦]", false)
 		}
 	}
 
