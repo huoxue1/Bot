@@ -162,7 +162,7 @@ func UpLoadFile(event go_mybots.Event) {
 		//}
 		datas := Unzip("./fiction/zip/"+event.File.Name, "")
 		for _, data := range datas {
-			message += string(GbkToUtf8([]byte(data))) + "\n"
+			message += string([]byte(data)) + "\n"
 			models.FileInsert(&models.File{
 				Filename: string(GbkToUtf8([]byte(data))),
 				Fileid:   "",
