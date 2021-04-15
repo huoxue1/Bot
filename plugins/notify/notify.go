@@ -16,6 +16,8 @@ func Notify(event go_mybots.Event) {
 	if event.UserId == event.SelfId {
 		return
 	}
-	bot.SendGroupMsg(event.GroupId, "[CQ:poke,qq="+strconv.Itoa(event.UserId)+"]", false)
-	bot.SendGroupMsg(event.GroupId, "不要再戳了......", false)
+	if int(event.TargetId) == event.SelfId {
+		bot.SendGroupMsg(event.GroupId, "[CQ:poke,qq="+strconv.Itoa(event.UserId)+"]", false)
+		bot.SendGroupMsg(event.GroupId, "不要再戳了......", false)
+	}
 }
