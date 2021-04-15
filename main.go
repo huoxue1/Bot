@@ -26,7 +26,7 @@ func main() {
 	hand := Bot.Hand()
 	handHttp(hand)
 	Bot.LoadFilter("./config.json")
-	err := hand.Run("0.0.0.0:80")
+	err := hand.Run("0.0.0.0:12121")
 	if err != nil {
 		log.Println("端口错误")
 	}
