@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/3343780376/go-mybots"
 	"log"
+	"strconv"
 	"time"
 )
 
@@ -84,11 +85,11 @@ func Test(event go_mybots.Event) {
 		return
 	}
 	if event.GroupId == xi {
-		bot.SendGroupMsg(event.GroupId, "欢迎新人,看公告，群名片【兮】,有事私戳管理\\n"+go_mybots.MessageAt(event.UserId).Message,
+		bot.SendGroupMsg(event.GroupId, "[CQ:image,file=http://q1.qlogo.cn/g?b=qq&nk="+strconv.Itoa(event.UserId)+"&s=640]欢迎新人,看公告，群名片【兮】,有事私戳管理\\n"+go_mybots.MessageAt(event.UserId).Message,
 			false)
 	} else if event.GroupId == fei {
 		bot.SendGroupMsg(event.GroupId,
-			fmt.Sprintf("欢迎新人,看公告，群名片【飞】,群文件已经开放，可自由提取\n请于一天之内修改马甲格式[CQ:at,qq=%v]", event.UserId), false)
+			fmt.Sprintf("[CQ:image,file=http://q1.qlogo.cn/g?b=qq&nk="+strconv.Itoa(event.UserId)+"&s=640]欢迎新人,看公告，群名片【飞】,群文件已经开放，可自由提取\n请于一天之内修改马甲格式[CQ:at,qq=%v]", event.UserId), false)
 	} else if event.GroupId == testId {
 		bot.SendGroupMsg(event.GroupId, "欢迎", true)
 	}
@@ -109,7 +110,7 @@ func SignIn(event go_mybots.Event) {
 		if !sign {
 			num := models.SelectSign(event)
 			bot.SendGroupMsg(event.GroupId,
-				fmt.Sprintf("签到成功,积分增加2;\n当前共有积分%v\n[CQ:at,qq=%v]", num, event.UserId), false)
+				fmt.Sprintf("[CQ:image,file=http://q1.qlogo.cn/g?b=qq&nk="+strconv.Itoa(event.UserId)+"&s=640]签到成功,积分增加2;\n当前共有积分%v\n[CQ:at,qq=%v]", num, event.UserId), false)
 		} else {
 			num := models.SelectSign(event)
 			bot.SendGroupMsg(event.GroupId,
