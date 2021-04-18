@@ -164,7 +164,7 @@ func UpLoadFile(event go_mybots.Event) {
 		for _, data := range datas {
 			message += string([]byte(data)) + "\n"
 			models.FileInsert(&models.File{
-				Filename: string(GbkToUtf8([]byte(data))),
+				Filename: string([]byte(data)),
 				Fileid:   "",
 				Busid:    0,
 				Ischild:  1,
